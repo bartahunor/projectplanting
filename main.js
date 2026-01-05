@@ -11,3 +11,4 @@ window.addEventListener("DOMContentLoaded", async () => {
   // ✅ 1. Include HTML-ek betöltése (meg kell várni őket!)
   await includeHTML("header", "pieces/header.html");
 });
+
