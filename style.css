@@ -18,9 +18,11 @@ h1{
 /* fejlec*/
 .fejlec{
     display: flex;
-    background-color: black;
-    height: 120px;
+    background-color: #95bb72;
+    height: 12%;
     flex-direction: row;
+
+    align-items: center;
     position: fixed; 
     top: 0; 
     width: 100%;
@@ -31,14 +33,19 @@ h1{
 
     padding-left: 20px;
     padding-right: 20px;
+    
 }
 .alap-left{
     display: flex;
-    height: 120px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: auto;
     width: auto;
     gap: 15px;
     padding-top: 3px;
-    color: white;
+    color: black;
+    height: 100%;
 }
 
 .alap-right{
@@ -47,13 +54,72 @@ h1{
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    height: 120px;
+    height: 100%;
     gap: 20px;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    font-size: 0.8rem;
+
 }
 
+.item{
+    height: auto;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: auto;
+    margin-top: auto;    
+}
 
+.alap-right a{
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    position: relative;
+    overflow: hidden;
+    padding: 6px 0;
+    font-family: 'Poppins', sans-serif;
+
+}
+
+.alap-right a::before,
+.alap-right a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background: black;
+  transition: all 0.5s;
+}
+
+.alap-right a::before {
+  top: 0;
+  left: 0;
+}
+
+.alap-right a::after {
+  bottom: 0;
+  right: 0;
+}
+
+.alap-right a:hover::before {
+  width: 100%;
+  transition: width 0.25s ease-in-out;
+}
+
+.alap-right a:hover::after {
+  width: 100%;
+  transition: width 0.25s ease-in-out 0.25s;
+}
+
+.item0 img{
+    border-radius: 15px;
+    height: 50px;
+}
+#szov{
+    width: 100px;
+    font-weight: bold;
+}
 
 /* FRUZSI-kezdooldal*/
