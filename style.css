@@ -23,7 +23,7 @@ h1{
     background-color: #95bb72;
     height: 12%;
     flex-direction: row;
-
+    flex-wrap: wrap;
     align-items: center;
     position: fixed; 
     top: 0; 
@@ -60,7 +60,7 @@ h1{
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 0.8rem;
+    font-size: 1.2rem;
 
 }
 
@@ -114,13 +114,68 @@ h1{
   transition: width 0.25s ease-in-out 0.25s;
 }
 
+
 .item0 img{
-    border-radius: 25px;
-    height: 50px;
+    border-radius: 35px;
+    height: 70px;
 }
 #szov{
     width: 100px;
     font-weight: bold;
+}
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: black;
+    margin: 3px 0;
+    transition: 0.3s;
+}
+
+/* MOBIL NÉZET */
+@media screen and (max-width: 768px) {
+    .fejlec {
+        padding: 10px 15px;
+    }
+    
+    .menu-toggle {
+        display: flex;
+    }
+    
+    .alap-right {
+        position: fixed;
+        top: 80px;
+        left: -100%; /* Alapból rejtve */
+        width: 100%;
+        height: calc(100vh - 80px);
+        background-color: #95bb72;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 30px;
+        transform: none;
+        transition: left 0.3s ease;
+        gap: 30px;
+    }
+    
+    .alap-right.active {
+        left: 0; /* Megjelenik amikor aktív */
+    }
+    
+    .alap-right a {
+        font-size: 1.5rem;
+    }
+    
+    .item0 img {
+        height: 50px;
+        border-radius: 25px;
+    }
 }
 
 /* FRUZSI-kezdooldal*/
@@ -228,6 +283,7 @@ section {
     width: 100%;
     overflow: hidden;
     margin-top: 50px;
+
 }
 
 .cim video {
@@ -292,3 +348,120 @@ section {
 }
 
 
+
+.col-md-12{
+  padding: 0;
+} 
+
+.start-btn {
+    margin-top: 20px;
+    padding: 12px 30px;
+    font-size: 1.2rem;
+    color: white;
+    background-color: var(--color-primary);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(230, 23, 93, 0.4);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+/* Lábléc HUNOR */
+.lablec{
+    background-color: #95bb72;
+    min-height: 400px;
+    color: black;
+    margin-bottom: 0;
+    padding: 20px 0;
+}
+
+.lablec h3{
+    display: inline-block;
+    border-bottom: 2px solid black;
+    padding-bottom: 4px;
+    margin-bottom: 15px;
+}
+
+.lablec ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 15px;
+}
+
+.lablec li {
+    padding: 10px;
+    list-style: none;
+}
+
+.kapcsolat {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 400px;
+    padding: 20px;
+}
+
+.info{
+    padding-top: 40px;
+}
+
+.navigacio{
+    padding-top: 40px;
+}
+
+.map{
+    max-width: 450px;
+    width: 100%;
+    height: 300px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 1px 10px black;
+}
+
+.navigacio a{
+    text-decoration: none;
+    color: black;
+}
+/* MOBIL NÉZET - LÁBLÉC */
+@media screen and (max-width: 768px) {
+    .lablec {
+        min-height: auto;
+        padding: 30px 15px;
+    }
+    
+    .lablec .row {
+        flex-direction: column;
+    }
+    
+    .kapcsolat {
+        min-height: auto;
+        padding: 20px 15px;
+    }
+    
+    .info,
+    .navigacio {
+        padding-top: 30px;
+        padding-bottom: 20px;
+        width: 100%;
+    }
+    
+    .lablec h3 {
+        font-size: 1.3rem;
+    }
+    
+    .lablec li {
+        padding: 8px;
+        font-size: 0.95rem;
+    }
+    
+    .map {
+        max-width: 100%;
+        height: 250px;
+        margin-top: 15px;
+    }
+}

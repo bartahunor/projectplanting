@@ -8,8 +8,22 @@ async function includeHTML(id, file) {
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
-  // ✅ 1. Include HTML-ek betöltése (meg kell várni őket!)
   await includeHTML("header", "pieces/header.html");
+  await includeHTML("footer", "pieces/footer.html");
+});
+
+function toggleMenu() {
+    const menu = document.querySelector('.alap-right');
+    const toggle = document.querySelector('.menu-toggle');
+    menu.classList.toggle('active');
+    toggle.classList.toggle('active');
+}
+
+// Bezárja a menüt, ha linkre kattintunk
+document.querySelectorAll('.alap-right a').forEach(link => {
+    link.addEventListener('click', () => {
+        document.querySelector('.alap-right').classList.remove('active');
+    });
 });
 
 //FRUZSI- kezdooldal
@@ -34,3 +48,4 @@ const observer = new IntersectionObserver(handleIntersect, options);
 document.querySelectorAll('.fx-reveal').forEach(function(r) {
   observer.observe(r);
 });
+
