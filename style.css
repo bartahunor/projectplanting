@@ -123,3 +123,109 @@ h1{
 }
 
 /* FRUZSI-kezdooldal*/
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet"');
+
+:root {
+  --color-primary: #e6175d;
+  --color-light: #fff;
+  --color-medium: #eeeeee;
+  --font-title: "Playfair Display", serif;
+  --font-base: Lato, sans-serif;
+  --color-dark: #202330;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-weight: 400;
+}
+
+body {
+  padding: 60px;
+  color: var(--color-dark);
+  background-color: var(--color-medium);
+  font-family: Montserrat, sans-serif;
+}
+
+.l-heading {
+  font-size: 64px;
+  font-family: var(--font-title);
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 60px;
+  
+  span {
+    display: block;
+    font-size: 44px;
+  }
+}
+
+section {
+  width: min(90dvw, 768px);
+  margin: 0 auto;
+  padding: 40px;
+
+  display: grid;
+  grid-gap: 60px;
+  grid-template-columns: 1fr;
+}
+
+
+.c-card {
+  display: flex;
+  align-items: center;
+  margin-bottom: 150px;
+
+  &:nth-child(even) {
+    flex-direction: row-reverse;
+  }
+
+  .c-card__header {
+    width: 250px;
+    height: 250px;
+    border: 1px solid var(--color-primary);
+
+    img {
+      display: block;
+      margin: 20px;
+      width: 250px;
+      height: 250px;
+    }
+  }
+
+  .c-card__content {
+    padding: 0 40px;
+
+    h2 {
+      margin-bottom: 24px;
+      color: var(--color-primary);
+    }
+    
+    p {
+      line-height: 2;
+    }
+  }
+}
+
+
+.fx-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.fx-reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: 800ms cubic-bezier(0.5, 0, 0, 1);
+}
+
+
+.cim {
+    height: 600px;
+    width: 100%;
+    background-color: #e6175d;
+    justify-content: center;
+    align-items: center;
+}
