@@ -1,0 +1,27 @@
+{
+  "name": "projectplanting",
+  "version": "1.0.0",
+  "description": "Projekt a növényültetéshez - frontend + backend + Supabase DB",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bartahunor/projectplanting.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bartahunor/projectplanting/issues"
+  },
+  "homepage": "https://github.com/bartahunor/projectplanting#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "postgres": "^3.4.1"
+  }
+}

@@ -1,0 +1,52 @@
+Database password
+6UvDkKeKeqY7A6AJ
+
+A server.js még nem kéri le helyesen a db.js-től az adatbázist mert még supabasen nincs létre hozva, de a kapcsolatok már elméletileg működnek
+
+1️⃣ Hol írjuk ezt?
+
+Parancssorban / terminálban kell futtatni, nem a JS fájlba.
+
+Windowson lehet PowerShell, Command Prompt (cmd), vagy VS Code beépített terminál.
+
+Mac/Linux-on a Terminal.
+
+2️⃣ Parancs, amit írsz
+
+Nyisd meg a terminált a kívánt mappában, ahol a projektet tárolni szeretnéd (pl. C:\Sajat\informatika\projectplanting).
+
+Futtasd a klónozást:
+
+git clone https://github.com/bartahunor/projectplanting.git
+
+
+Ez letölti a GitHub repo tartalmát egy projectplanting nevű mappába.
+
+Lépj be a projekt mappájába:
+
+cd projectplanting
+
+3️⃣ Utána telepíted a csomagokat
+npm install
+
+
+Ez letölti az összes csomagot (express, dotenv, cors, postgres) a node_modules mappába.
+
+Most már a Node.js backend készen áll.
+
+4️⃣ .env fájl létrehozása
+
+A projekt gyökérmappájában hozz létre egy .env fájlt a Supabase connection stringgel:
+
+DATABASE_URL=postgres://postgres:<JELSZO>@xyz.supabase.co:5432/postgres
+
+
+Ez kötelező, különben a backend nem fog tudni csatlakozni a Supabase-hez.
+
+5️⃣ Backend indítása
+npm start
+
+
+Ez elindítja a Node.js szervert (server.js)
+
+Most a frontend JS (main.js) fetch-elheti az API-t a böngészőből
