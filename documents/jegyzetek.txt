@@ -3,6 +3,20 @@ Database password
 
 A server.js még nem kéri le helyesen a db.js-től az adatbázist mert még supabasen nincs létre hozva, de a kapcsolatok már elméletileg működnek
 
+CREATE TABLE novenyek (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    latin_nev VARCHAR(100) NOT NULL,
+    magyar_nev VARCHAR(100) NOT NULL,
+    faj VARCHAR(100),
+    fajta VARCHAR(100),
+    sortavolsag_cm INT,
+    totavolsag_cm INT,
+    jo_tarsak VARCHAR(1000) NOT NULL
+    rossz_tarsak VARCHAR(1000) NOT NULL
+);
+
+
+
 1️⃣ Hol írjuk ezt?
 
 Parancssorban / terminálban kell futtatni, nem a JS fájlba.
