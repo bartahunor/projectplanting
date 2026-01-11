@@ -7,6 +7,7 @@ html, body {
     min-height: 100%;
     font-family: 'Poppins', sans-serif;
     overflow-x: hidden;
+    background-color: #95bb72;
 }
 
 a{
@@ -184,8 +185,6 @@ h1{
 
 :root {
   --color-primary: #e6175d;
-  --color-light: #fff;
-  --color-medium: #eeeeee;
   --font-title: "Playfair Display", serif;
   --font-base: Lato, sans-serif;
   --color-dark: #202330;
@@ -279,7 +278,7 @@ section {
 
 .cim {
     position: relative;
-    height: 800px;
+    height: 660px;
     width: 100%;
     overflow: hidden;
     margin-top: 50px;
@@ -290,7 +289,7 @@ section {
     position: absolute;
     inset: 0;
     width: 100%;
-    height: 90%;
+    height: 100%;
     object-fit: cover;
     z-index: 0;
 }
@@ -365,6 +364,238 @@ section {
     box-shadow: 0 4px 15px rgba(230, 23, 93, 0.4);
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+/*FRUZSI - oldal felépítése*/
+.egesz{  
+    flex-direction: column;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    gap: 0;}
+
+.semmi{
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    
+}
+
+.rolunk {
+    transition: transform 0.5s linear;
+    background-color: #00441b;
+    height: 750px;
+    position: relative;
+    transform: translateY(100%);
+    transition: transform 0.5s ease-out; 
+    width: 100%;
+    height: 850px;
+    z-index: 10;
+}
+
+.bemutato{
+    color: white;
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+    display: flex;
+    gap:20px
+
+}
+.valami{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    margin: auto;
+}
+
+
+.tobbi{
+    flex-direction: row;
+    display: flex;
+    width: 50%;
+    height: 100%;
+}
+
+.irat{
+    font-size: 20px;
+    margin: auto;
+    text-align: justify;
+}
+
+.irat p{
+    margin-bottom: 20px;
+}
+
+.nagy{
+ font-size: 20px;
+  font-weight: bold;
+  display: inline-block;
+  position: relative;
+  color: #e0f2e9;
+  margin-bottom: 40px;
+
+}
+
+.kep{
+    width: 100%;
+    position: relative;
+    background-image: url(pictures/zoldseg.webp);
+    background-size: cover;
+    background-position: center;
+    justify-content: end;
+    background-position: right center;
+
+    mask-image: linear-gradient(to right, transparent 0%, black 30%, black 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%, black 100%);
+    
+}
+
+.scroll-anim {
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.3s ease-out, transform 0.5s ease-out;
+}
+
+.scroll-anim.in-view {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/*FRUZSI - vélemyének*/
+.section-title {
+  position: relative;
+  font-size: 36px;
+  font-weight: bold;
+  color: #e0f2e9;
+  margin-left: 30px;
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+  display: inline-block;
+  width: fit-content; /* csak a szöveg szélessége */
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  width: 100vw; /* a teljes nézetablak szélesség */
+  background: linear-gradient(90deg, #a3d9a5, #00441b);
+  border-radius: 2px;
+  transform-origin: left center;
+  /* Balról indul, de a teljes képernyőszélesség */
+  z-index: -1;
+  pointer-events: none;
+}
+
+.testimonial-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 50px auto;
+  background-color: #00441b;
+  color: white;
+  padding: 30px 40px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.carousel-track-container {
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.carousel-slide {
+  min-width: 33.3333%; /* 3 elem egymás mellett */
+  box-sizing: border-box;
+  padding: 10px 20px;
+}
+
+.testimonial {
+  text-align: center;
+  background-color: #086530;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stars {
+  font-size: 24px;
+  color: gold;
+  margin-bottom: 15px;
+}
+
+.testimonial p {
+  font-style: italic;
+  font-size: 18px;
+  margin-bottom: 15px;
+  flex-grow: 1;
+}
+
+.testimonial h4 {
+  font-weight: bold;
+  font-size: 20px;
+  margin-top: auto;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 60%;
+  transform: translateY(-50%);
+  background-color: #e0f2e9;
+  border: none;
+  color: #00441b;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  user-select: none;
+  transition: background-color 0.3s ease;
+  z-index: 5;
+}
+
+.carousel-btn:hover {
+  background-color: #a3d9a5;
+}
+
+.prev-btn {
+  left: 15px;
+}
+
+.next-btn {
+  right: 15px;
+}
+
+/* Reszponzív mobilra */
+
+@media (max-width: 768px) {
+  .carousel-slide {
+    min-width: 100%; /* 1 elem mobilon */
+  }
+}
+
+.velemenyek{
+    width: 100%;
+    background-color: #00441b;
+}
+
+
+
 
 
 /* Lábléc HUNOR */

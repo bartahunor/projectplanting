@@ -26,7 +26,7 @@ document.querySelectorAll('.alap-right a').forEach(link => {
     });
 });
 
-//FRUZSI- kezdooldal
+//FRUZSI - kezdooldal
 const ratio = 0.1;
 const options = {
   root: null,
@@ -50,9 +50,88 @@ document.querySelectorAll('.fx-reveal').forEach(function(r) {
 });
 
 
+//FRUZSI - görgetés
+
+function velemenyekScroll() {
+    const rolunk = document.querySelector('.semmi');
+    const velemenyek = document.querySelector('.rolunk');
+    if (!rolunk || !velemenyek) return;
+
+    const rect = rolunk.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    const speedFactor = 1.5;
+
+    let progress = (windowHeight - rect.bottom) / rect.height;
+    progress = Math.min(Math.max(progress, 0), 1);
+
+    let translateY = 100 - progress * 100 * speedFactor;
+    translateY = Math.min(100, Math.max(0, translateY));
+
+    velemenyek.style.transform = `translateY(${translateY}%)`;
+}
+
+window.addEventListener('scroll', velemenyekScroll);
+window.addEventListener('resize', velemenyekScroll);
+document.addEventListener('DOMContentLoaded', velemenyekScroll);
 
 
+function isInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    return (
+      rect.top < window.innerHeight &&
+      rect.bottom > 0
+    );
+  }
 
+  function checkScrollAnimations() {
+    const elements = document.querySelectorAll('.scroll-anim');
+    elements.forEach(el => {
+      if (isInViewport(el)) {
+        el.classList.add('in-view');
+      } else {
+        el.classList.remove('in-view');
+      }
+    });
+  }
+
+  document.addEventListener('scroll', checkScrollAnimations);
+  document.addEventListener('DOMContentLoaded', checkScrollAnimations);
+
+//FRUZSI - vélemények
+const track = document.querySelector('.carousel-track');
+const slides = Array.from(track.children);
+const prevButton = document.querySelector('.prev-btn');
+const nextButton = document.querySelector('.next-btn');
+
+let currentIndex = 0;
+
+function updateCarousel() {
+  const slideWidth = slides[0].getBoundingClientRect().width;
+  const moveAmount = slideWidth * currentIndex;
+  track.style.transform = `translateX(-${moveAmount}px)`;
+}
+
+prevButton.addEventListener('click', () => {
+  if (currentIndex === 0) {
+    currentIndex = slides.length - 3; // visszalép az utolsó 3 elem elsőjére
+  } else {
+    currentIndex--;
+  }
+  updateCarousel();
+});
+
+nextButton.addEventListener('click', () => {
+  if (currentIndex >= slides.length - 3) {
+    currentIndex = 0; // újra az elejére ugrik
+  } else {
+    currentIndex++;
+  }
+  updateCarousel();
+});
+
+window.addEventListener('resize', updateCarousel);
+
+updateCarousel();
 
 
 //HUNOR - API függvények
