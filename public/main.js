@@ -10,6 +10,15 @@ async function includeHTML(id, file) {
 window.addEventListener("DOMContentLoaded", async () => {
   await includeHTML("header", "pieces/header.html");
   await includeHTML("footer", "pieces/footer.html");
+  
+  // Várunk egy kicsit, hogy a HTML elemek tényleg betöltődjenek
+  setTimeout(() => {
+    const novenyekLista = document.getElementById('novenyek-lista');
+    if (novenyekLista) {
+      console.log('Növények oldal észlelve, adatok betöltése...');
+      betoltNovenyek();
+    }
+  }, 100);
 });
 
 function toggleMenu() {
@@ -200,6 +209,7 @@ function megjelenit(novenyek) {
   });
 }
 
+/*
 // Egy adott növény lekérése ID alapján
 async function lekeresNoveny(id) {
   try {
@@ -273,7 +283,7 @@ async function torolNoveny(id) {
     console.error('Hiba a növény törlésekor:', error);
   }
 }
-
+*/
 // Példa használatra:
 // ujNoveny({
 //   latin_nev: 'Solanum lycopersicum',
@@ -285,4 +295,10 @@ async function torolNoveny(id) {
 //   jo_tarsak: 'bazsalikom, sárgarépa',
 //   rossz_tarsak: 'burgonya, uborka'
 // });
-betoltNovenyek();
+window.addEventListener('DOMContentLoaded', () => {
+  const novenyekLista = document.getElementById('novenyek-lista');
+  if (novenyekLista) {
+    console.log('Növények oldal észlelve, adatok betöltése...');
+    betoltNovenyek();
+  }
+});
