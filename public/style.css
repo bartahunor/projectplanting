@@ -795,6 +795,19 @@ details[open] summary::after {
 }
 
 .noveny-cards{
+  background-color: #00441b;
+}
+
+.noveny-card{
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 50%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#novenyek-lista{
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -803,5 +816,4 @@ details[open] summary::after {
   padding: 50px 0px 50px 0px;
   height: fit-content;
   width: 100%;
-  background-color: #00441b;
 }

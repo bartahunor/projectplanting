@@ -107,40 +107,53 @@ function isInViewport(el) {
   document.addEventListener('DOMContentLoaded', checkScrollAnimations);
 
 //FRUZSI - vélemények
-const track = document.querySelector('.carousel-track');
-const slides = Array.from(track.children);
-const prevButton = document.querySelector('.prev-btn');
-const nextButton = document.querySelector('.next-btn');
-
-let currentIndex = 0;
-
-function updateCarousel() {
-  const slideWidth = slides[0].getBoundingClientRect().width;
-  const moveAmount = slideWidth * currentIndex;
-  track.style.transform = `translateX(-${moveAmount}px)`;
-}
-
-prevButton.addEventListener('click', () => {
-  if (currentIndex === 0) {
-    currentIndex = slides.length - 3; // visszalép az utolsó 3 elem elsőjére
-  } else {
-    currentIndex--;
+window.addEventListener('DOMContentLoaded', () => {
+  const track = document.querySelector('.carousel-track');
+  
+  // Ha nincs carousel az oldalon, ne futtassuk a kódot
+  if (!track) {
+    console.log('Nincs carousel ezen az oldalon');
+    return;
   }
+  
+  const slides = Array.from(track.children);
+  const prevButton = document.querySelector('.prev-btn');
+  const nextButton = document.querySelector('.next-btn');
+
+  if (!slides.length || !prevButton || !nextButton) {
+    console.log('Carousel elemek hiányoznak');
+    return;
+  }
+
+  let currentIndex = 0;
+
+  function updateCarousel() {
+    const slideWidth = slides[0].getBoundingClientRect().width;
+    const moveAmount = slideWidth * currentIndex;
+    track.style.transform = `translateX(-${moveAmount}px)`;
+  }
+
+  prevButton.addEventListener('click', () => {
+    if (currentIndex === 0) {
+      currentIndex = slides.length - 3;
+    } else {
+      currentIndex--;
+    }
+    updateCarousel();
+  });
+
+  nextButton.addEventListener('click', () => {
+    if (currentIndex >= slides.length - 3) {
+      currentIndex = 0;
+    } else {
+      currentIndex++;
+    }
+    updateCarousel();
+  });
+
+  window.addEventListener('resize', updateCarousel);
   updateCarousel();
 });
-
-nextButton.addEventListener('click', () => {
-  if (currentIndex >= slides.length - 3) {
-    currentIndex = 0; // újra az elejére ugrik
-  } else {
-    currentIndex++;
-  }
-  updateCarousel();
-});
-
-window.addEventListener('resize', updateCarousel);
-
-updateCarousel();
 
 
 //HUNOR - API függvények
@@ -283,7 +296,71 @@ async function torolNoveny(id) {
     console.error('Hiba a növény törlésekor:', error);
   }
 }
+
 */
+
+
+//FRUZSI - TERVEZŐ
+document.getElementById("gotoTervezo").addEventListener("click", () => {
+    // Jelző a sessionStorage-ban, hogy innen jött a felhasználó
+    sessionStorage.setItem("fromKezdo", "true");
+
+    // Átirányítás a tervezo.html-re
+    window.location.href = "tervezo.html";
+});
+document.addEventListener("DOMContentLoaded", () => {
+    // Ellenőrizzük, hogy a felhasználó a kezdooldalról jött-e
+    const fromKezdo = sessionStorage.getItem("fromKezdo");
+
+    if (fromKezdo === "true") {
+        // Futtatjuk a függvényt
+        valami();
+
+        // Töröljük a jelzőt, hogy ne fusson újra frissítéskor
+        sessionStorage.removeItem("fromKezdo");
+    }
+
+    async function valami() {
+          try {
+            const response = await fetch("pieces/taj.html");
+
+            if (!response.ok) {
+                console.error("Nem sikerült betölteni: taj.html");
+                alert("Hiba: nem sikerült betölteni a fájlt!");
+                return;
+            }
+
+            const html = await response.text();
+            const popupEl = document.getElementById("popup");
+          
+            if (!popupEl) {
+                alert("HIBA: popupe nem található!");
+                return;
+            }
+          
+            // HTML betöltése
+            popupEl.innerHTML = html;
+            popupEl.classList.add("popuppage-active");
+          
+            console.log("✓ Halál oldal betöltve.");
+        }
+        catch (err) {
+            console.error("Hiba történt betöltés közben:", err);
+            alert("Hiba: " + err.message);
+        }
+
+
+    }
+});
+const gotoTervezoBtn = document.getElementById("gotoTervezo");
+if (gotoTervezoBtn) {
+  gotoTervezoBtn.addEventListener("click", () => {
+    sessionStorage.setItem("fromKezdo", "true");
+    window.location.href = "tervezo.html";
+  });
+}
+
+
 // Példa használatra:
 // ujNoveny({
 //   latin_nev: 'Solanum lycopersicum',

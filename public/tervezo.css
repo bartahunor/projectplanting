@@ -1,0 +1,60 @@
+/*FRUZSI - kinézet*/
+body {
+    position: relative;
+    margin: 0;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("pictures/farmvegso.png");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.6; 
+    z-index: -1;
+}
+
+.top-left-buttons {
+    position: fixed;
+    top: 150px;
+    left: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 1000;
+}
+
+.top-left-buttons button {
+    padding: 18px 28px;   /* nagyobb belső tér */
+    font-size: 18px;      /* nagyobb szöveg */
+    width: 300px;
+    height: 100px; 
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    background-color: #2e7d32;
+    color: white;
+}
+
+.top-left-buttons button:hover {
+    background-color: #1b5e20;
+}
+
+
+.popuppage-active{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
