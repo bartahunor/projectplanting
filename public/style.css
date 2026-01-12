@@ -278,7 +278,7 @@ section {
 
 .cim {
     position: relative;
-    height: 660px;
+    height: 890px;
     width: 100%;
     overflow: hidden;
     margin-top: 50px;
@@ -289,7 +289,7 @@ section {
     position: absolute;
     inset: 0;
     width: 100%;
-    height: 100%;
+    height: 108%;
     object-fit: cover;
     z-index: 0;
 }
@@ -462,6 +462,74 @@ section {
   opacity: 1;
   transform: scale(1);
 }
+/*FRUZSI - gyakranism */
+#faqh1 {
+    text-align: center;
+    margin-top: 150px;
+    color: white;
+
+}
+
+#faq{
+  width: 100%;
+  background-color: #00441b;
+  margin-top: -40px;
+  padding-top: 60px;
+  height: fit-content;
+}
+
+.faq {
+    max-width: 600px;
+    padding-top: 10px;
+    padding-bottom: 100px;
+    display: block;
+    margin: auto;
+    background-color: #00441b;
+    
+}
+
+details {
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 15px 20px;
+    border: 1px solid #ddd;
+    transition: all 0.2s ease;
+}
+
+summary {
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    list-style: none;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+details[open] {
+    border-color: #007bff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+details p {
+    margin-top: 10px;
+    color: black;
+    line-height: 1.5;
+}
+
+summary::after {
+    content: '+';
+    float: right;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+details[open] summary::after {
+    content: '-';
+    transform: rotate(180deg);
+}
 
 /*FRUZSI - vélemyének*/
 .section-title {
@@ -496,7 +564,7 @@ section {
   width: 100%;
   height: 100%;
   margin: 50px auto;
-  background-color: #00441b;
+  background-color:#086530;
   color: white;
   padding: 30px 40px;
   border-radius: 10px;
@@ -516,14 +584,14 @@ section {
 }
 
 .carousel-slide {
-  min-width: 33.3333%; /* 3 elem egymás mellett */
+  min-width: 33.3333%; 
   box-sizing: border-box;
   padding: 10px 20px;
 }
 
 .testimonial {
   text-align: center;
-  background-color: #086530;
+  background-color: #00441b;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.4);
@@ -591,7 +659,7 @@ section {
 
 .velemenyek{
     width: 100%;
-    background-color: #00441b;
+    background-color: #086530;
 }
 
 
@@ -634,6 +702,7 @@ section {
     text-align: center;
     min-height: 400px;
     padding: 20px;
+    border: 1px black solid;
 }
 
 .info{
@@ -642,16 +711,19 @@ section {
 
 .navigacio{
     padding-top: 40px;
+    border: 1px black solid;
+    
 }
 
 .map{
     max-width: 450px;
-    width: 100%;
+    width: fit-content;
     height: 300px;
     border: none;
     border-radius: 8px;
     margin-top: 20px;
     box-shadow: 0 1px 10px black;
+    border: 1px black solid;
 }
 
 .navigacio a{
