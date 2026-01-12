@@ -388,3 +388,8 @@ window.addEventListener('DOMContentLoaded', () => {
     betoltNovenyek();
   }
 });
+
+
+//FRUZSI - ayasok
+
+
