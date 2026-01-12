@@ -208,16 +208,29 @@ function megjelenit(novenyek) {
   novenyek.forEach(noveny => {
     const card = document.createElement('div');
     card.className = 'noveny-card';
+    
     card.innerHTML = `
-      <h3>${noveny.magyar_nev}</h3>
-      <p><em>${noveny.latin_nev}</em></p>
-      <p><strong>Faj:</strong> ${noveny.faj || 'N/A'}</p>
-      <p><strong>Fajta:</strong> ${noveny.fajta || 'N/A'}</p>
-      <p><strong>Sortávolság:</strong> ${noveny.sortavolsag_cm || 'N/A'} cm</p>
-      <p><strong>Tőtávolság:</strong> ${noveny.totavolsag_cm || 'N/A'} cm</p>
-      <p><strong>Jó társak:</strong> ${noveny.jo_tarsak}</p>
-      <p><strong>Rossz társak:</strong> ${noveny.rossz_tarsak}</p>
+      <div class="noveny-card-left">
+           <h2>${noveny.magyar_nev}</h2>
+           <p><em>${noveny.latin_nev}</em></p>
+           <p>A ${noveny.faj || 'N/A'} fajhoz tartozó ${noveny.magyar_nev} növény, azon belül a ${noveny.fajta || 'N/A'} fajtába.</p>
+      </div>
+      <div class="noveny-card-right"></div>
     `;
+    
+    // Most már a card-on belül keresünk, NEM az egész document-ben!
+    const novenypic = card.querySelector('.noveny-card-right');
+    
+    if (noveny.kep) {
+      novenypic.style.backgroundImage = `url('${noveny.kep}')`;
+      novenypic.style.backgroundSize = 'cover';
+      novenypic.style.backgroundPosition = 'center';
+    } else {
+      // Ha nincs kép, alapértelmezett háttér vagy szöveg
+      novenypic.innerHTML = '<p>Nincs kép</p>';
+      novenypic.style.backgroundColor = '#e0e0e0';
+    }
+    
     container.appendChild(card);
   });
 }
@@ -301,27 +314,31 @@ async function torolNoveny(id) {
 
 
 //FRUZSI - TERVEZŐ
-document.getElementById("gotoTervezo").addEventListener("click", () => {
-    // Jelző a sessionStorage-ban, hogy innen jött a felhasználó
-    sessionStorage.setItem("fromKezdo", "true");
-
-    // Átirányítás a tervezo.html-re
-    window.location.href = "tervezo.html";
-});
-document.addEventListener("DOMContentLoaded", () => {
-    // Ellenőrizzük, hogy a felhasználó a kezdooldalról jött-e
-    const fromKezdo = sessionStorage.getItem("fromKezdo");
-
-    if (fromKezdo === "true") {
-        // Futtatjuk a függvényt
-        valami();
-
-        // Töröljük a jelzőt, hogy ne fusson újra frissítéskor
-        sessionStorage.removeItem("fromKezdo");
+window.addEventListener("DOMContentLoaded", async () => {
+    // Várunk, hogy a header betöltődjön (ha van)
+    await new Promise(resolve => setTimeout(resolve, 200));
+    
+    const gotoTervezoBtn = document.getElementById("gotoTervezo");
+    if (gotoTervezoBtn) {
+        gotoTervezoBtn.addEventListener("click", () => {
+            sessionStorage.setItem("fromKezdo", "true");
+            window.location.href = "tervezo.html";
+        });
+        console.log("✓ Tervező gomb eseménykezelő hozzáadva");
     }
 
-    async function valami() {
-          try {
+    // Ellenőrizzük, hogy a tervezo.html oldalon vagyunk-e
+    const fromKezdo = sessionStorage.getItem("fromKezdo");
+    const popupEl = document.getElementById("popup");
+
+    if (fromKezdo === "true" && popupEl) {
+        console.log("✓ Felhasználó a kezdőoldalról jött, popup betöltése...");
+        
+        // Töröljük a jelzőt
+        sessionStorage.removeItem("fromKezdo");
+        
+        // Betöltjük a popup-ot
+        try {
             const response = await fetch("pieces/taj.html");
 
             if (!response.ok) {
@@ -331,33 +348,25 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const html = await response.text();
-            const popupEl = document.getElementById("popup");
-          
-            if (!popupEl) {
-                alert("HIBA: popupe nem található!");
-                return;
-            }
-          
+            
             // HTML betöltése
             popupEl.innerHTML = html;
             popupEl.classList.add("popuppage-active");
-          
-            console.log("✓ Halál oldal betöltve.");
-        }
-        catch (err) {
+            
+            console.log("✓ Popup oldal betöltve!");
+        } catch (err) {
             console.error("Hiba történt betöltés közben:", err);
             alert("Hiba: " + err.message);
         }
-
-
     }
 });
-const gotoTervezoBtn = document.getElementById("gotoTervezo");
-if (gotoTervezoBtn) {
-  gotoTervezoBtn.addEventListener("click", () => {
-    sessionStorage.setItem("fromKezdo", "true");
-    window.location.href = "tervezo.html";
-  });
+
+function closePopup() {
+    const popupEl = document.getElementById("popup");
+    if (popupEl) {
+        popupEl.classList.remove("popuppage-active"); 
+        popupEl.innerHTML = '';
+    }
 }
 
 
