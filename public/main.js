@@ -274,6 +274,59 @@ async function torolNoveny(id) {
   }
 }
 
+//FRUZSI - TERVEZŐ
+document.getElementById("gotoTervezo").addEventListener("click", () => {
+    // Jelző a sessionStorage-ban, hogy innen jött a felhasználó
+    sessionStorage.setItem("fromKezdo", "true");
+
+    // Átirányítás a tervezo.html-re
+    window.location.href = "tervezo.html";
+});
+document.addEventListener("DOMContentLoaded", () => {
+    // Ellenőrizzük, hogy a felhasználó a kezdooldalról jött-e
+    const fromKezdo = sessionStorage.getItem("fromKezdo");
+
+    if (fromKezdo === "true") {
+        // Futtatjuk a függvényt
+        valami();
+
+        // Töröljük a jelzőt, hogy ne fusson újra frissítéskor
+        sessionStorage.removeItem("fromKezdo");
+    }
+
+    async function valami() {
+          try {
+            const response = await fetch("pieces/taj.html");
+
+            if (!response.ok) {
+                console.error("Nem sikerült betölteni: taj.html");
+                alert("Hiba: nem sikerült betölteni a fájlt!");
+                return;
+            }
+
+            const html = await response.text();
+            const popupEl = document.getElementById("popup");
+          
+            if (!popupEl) {
+                alert("HIBA: popupe nem található!");
+                return;
+            }
+          
+            // HTML betöltése
+            popupEl.innerHTML = html;
+            popupEl.classList.add("popuppage-active");
+          
+            console.log("✓ Halál oldal betöltve.");
+        }
+        catch (err) {
+            console.error("Hiba történt betöltés közben:", err);
+            alert("Hiba: " + err.message);
+        }
+
+
+    }
+});
+
 // Példa használatra:
 // ujNoveny({
 //   latin_nev: 'Solanum lycopersicum',
