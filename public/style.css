@@ -702,7 +702,6 @@ details[open] summary::after {
     text-align: center;
     min-height: 400px;
     padding: 20px;
-    border: 1px black solid;
 }
 
 .info{
@@ -711,7 +710,6 @@ details[open] summary::after {
 
 .navigacio{
     padding-top: 40px;
-    border: 1px black solid;
     
 }
 
@@ -723,7 +721,6 @@ details[open] summary::after {
     border-radius: 8px;
     margin-top: 20px;
     box-shadow: 0 1px 10px black;
-    border: 1px black solid;
 }
 
 .navigacio a{
@@ -767,4 +764,56 @@ details[open] summary::after {
         height: 250px;
         margin-top: 15px;
     }
+}
+
+/* HUNOR növényeink oldal */
+.nov-cim{
+  margin-top: 50px;
+  text-align: center;
+  width: 100%;
+  height: 400px;
+  background-image: 
+  linear-gradient(to bottom, 
+    rgba(0, 0, 0, 0.4) 0%, 
+    rgba(0, 68, 27, 0.6) 70%,
+    rgba(0, 68, 27, 1) 100%
+  ),
+  url(pictures/zoldseg.webp);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  background-color: #00441b;
+}
+.nov-cim h1{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 4rem;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.9); /* Erősebb árnyék a jobb olvashatósághoz */
+}
+
+.noveny-cards{
+  background-color: #00441b;
+}
+
+.noveny-card{
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 50%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#novenyek-lista{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 50px 0px 50px 0px;
+  height: fit-content;
+  width: 100%;
 }

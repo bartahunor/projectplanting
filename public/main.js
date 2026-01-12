@@ -10,6 +10,15 @@ async function includeHTML(id, file) {
 window.addEventListener("DOMContentLoaded", async () => {
   await includeHTML("header", "pieces/header.html");
   await includeHTML("footer", "pieces/footer.html");
+  
+  // Várunk egy kicsit, hogy a HTML elemek tényleg betöltődjenek
+  setTimeout(() => {
+    const novenyekLista = document.getElementById('novenyek-lista');
+    if (novenyekLista) {
+      console.log('Növények oldal észlelve, adatok betöltése...');
+      betoltNovenyek();
+    }
+  }, 100);
 });
 
 function toggleMenu() {
@@ -98,40 +107,53 @@ function isInViewport(el) {
   document.addEventListener('DOMContentLoaded', checkScrollAnimations);
 
 //FRUZSI - vélemények
-const track = document.querySelector('.carousel-track');
-const slides = Array.from(track.children);
-const prevButton = document.querySelector('.prev-btn');
-const nextButton = document.querySelector('.next-btn');
-
-let currentIndex = 0;
-
-function updateCarousel() {
-  const slideWidth = slides[0].getBoundingClientRect().width;
-  const moveAmount = slideWidth * currentIndex;
-  track.style.transform = `translateX(-${moveAmount}px)`;
-}
-
-prevButton.addEventListener('click', () => {
-  if (currentIndex === 0) {
-    currentIndex = slides.length - 3; // visszalép az utolsó 3 elem elsőjére
-  } else {
-    currentIndex--;
+window.addEventListener('DOMContentLoaded', () => {
+  const track = document.querySelector('.carousel-track');
+  
+  // Ha nincs carousel az oldalon, ne futtassuk a kódot
+  if (!track) {
+    console.log('Nincs carousel ezen az oldalon');
+    return;
   }
+  
+  const slides = Array.from(track.children);
+  const prevButton = document.querySelector('.prev-btn');
+  const nextButton = document.querySelector('.next-btn');
+
+  if (!slides.length || !prevButton || !nextButton) {
+    console.log('Carousel elemek hiányoznak');
+    return;
+  }
+
+  let currentIndex = 0;
+
+  function updateCarousel() {
+    const slideWidth = slides[0].getBoundingClientRect().width;
+    const moveAmount = slideWidth * currentIndex;
+    track.style.transform = `translateX(-${moveAmount}px)`;
+  }
+
+  prevButton.addEventListener('click', () => {
+    if (currentIndex === 0) {
+      currentIndex = slides.length - 3;
+    } else {
+      currentIndex--;
+    }
+    updateCarousel();
+  });
+
+  nextButton.addEventListener('click', () => {
+    if (currentIndex >= slides.length - 3) {
+      currentIndex = 0;
+    } else {
+      currentIndex++;
+    }
+    updateCarousel();
+  });
+
+  window.addEventListener('resize', updateCarousel);
   updateCarousel();
 });
-
-nextButton.addEventListener('click', () => {
-  if (currentIndex >= slides.length - 3) {
-    currentIndex = 0; // újra az elejére ugrik
-  } else {
-    currentIndex++;
-  }
-  updateCarousel();
-});
-
-window.addEventListener('resize', updateCarousel);
-
-updateCarousel();
 
 
 //HUNOR - API függvények
@@ -200,6 +222,7 @@ function megjelenit(novenyek) {
   });
 }
 
+/*
 // Egy adott növény lekérése ID alapján
 async function lekeresNoveny(id) {
   try {
@@ -274,6 +297,9 @@ async function torolNoveny(id) {
   }
 }
 
+*/
+
+
 //FRUZSI - TERVEZŐ
 document.getElementById("gotoTervezo").addEventListener("click", () => {
     // Jelző a sessionStorage-ban, hogy innen jött a felhasználó
@@ -326,6 +352,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 });
+const gotoTervezoBtn = document.getElementById("gotoTervezo");
+if (gotoTervezoBtn) {
+  gotoTervezoBtn.addEventListener("click", () => {
+    sessionStorage.setItem("fromKezdo", "true");
+    window.location.href = "tervezo.html";
+  });
+}
+
 
 // Példa használatra:
 // ujNoveny({
@@ -338,4 +372,10 @@ document.addEventListener("DOMContentLoaded", () => {
 //   jo_tarsak: 'bazsalikom, sárgarépa',
 //   rossz_tarsak: 'burgonya, uborka'
 // });
-betoltNovenyek();
+window.addEventListener('DOMContentLoaded', () => {
+  const novenyekLista = document.getElementById('novenyek-lista');
+  if (novenyekLista) {
+    console.log('Növények oldal észlelve, adatok betöltése...');
+    betoltNovenyek();
+  }
+});
