@@ -115,7 +115,6 @@ h1{
   transition: width 0.25s ease-in-out 0.25s;
 }
 
-
 .item0 img{
     border-radius: 35px;
     height: 70px;
@@ -802,7 +801,7 @@ details[open] summary::after {
 }
 
 .noveny-card{
-  background-color: white;
+  background-color: #9cac7e;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 50%;
@@ -812,15 +811,38 @@ details[open] summary::after {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  color: black;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+.noveny-card:hover{
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
 }
 .noveny-card-left{
   height: 100%;
-  width: 70%;
+  width: 50%;
+  border-radius: 15px 0px 0px 15px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 3%;
+  justify-content: center;
+}
+.noveny-card-left h2{
+  margin: 0;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.noveny-card-left-desc{
+  margin-top: 10%;
 }
 .noveny-card-right{
   height: 100%;
-  width: 30%;
+  width: 50%;
+  border-radius: 0px 15px 15px 0px;
 }
+
 
 #novenyek-lista{
   width: 100%;

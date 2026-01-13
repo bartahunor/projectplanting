@@ -213,7 +213,7 @@ function megjelenit(novenyek) {
       <div class="noveny-card-left">
            <h2>${noveny.magyar_nev}</h2>
            <p><em>${noveny.latin_nev}</em></p>
-           <p>A ${noveny.faj || 'N/A'} fajhoz tartozó ${noveny.magyar_nev} növény, azon belül a ${noveny.fajta || 'N/A'} fajtába.</p>
+           <p class="noveny-card-left-desc">A ${noveny.faj || 'N/A'} fajhoz tartozó ${noveny.magyar_nev} növény, azon belül a ${noveny.fajta || 'N/A'} fajtába.</p>
       </div>
       <div class="noveny-card-right"></div>
     `;
@@ -222,7 +222,13 @@ function megjelenit(novenyek) {
     const novenypic = card.querySelector('.noveny-card-right');
     
     if (noveny.kep) {
-      novenypic.style.backgroundImage = `url('${noveny.kep}')`;
+      novenypic.style.backgroundImage = `
+        linear-gradient(to left, 
+        rgba(156, 172, 126, 0.2) 0%, 
+        rgba(156, 172, 126, 0.5) 60%,
+        rgba(156, 172, 126, 1) 100%
+        ),url('${noveny.kep}')
+      `;
       novenypic.style.backgroundSize = 'cover';
       novenypic.style.backgroundPosition = 'center';
     } else {
