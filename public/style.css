@@ -115,6 +115,10 @@ h1{
   transition: width 0.25s ease-in-out 0.25s;
 }
 
+.alap-right a.active {
+    color: white; /* Vagy bármilyen más szín */
+}
+
 .item0 img{
     border-radius: 35px;
     height: 70px;

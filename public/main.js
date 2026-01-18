@@ -11,6 +11,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   await includeHTML("header", "pieces/header.html");
   await includeHTML("footer", "pieces/footer.html");
   
+  setActiveMenuItem();
   // Várunk egy kicsit, hogy a HTML elemek tényleg betöltődjenek
   setTimeout(() => {
     const novenyekLista = document.getElementById('novenyek-lista');
@@ -20,6 +21,22 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
   }, 100);
 });
+
+function setActiveMenuItem() {
+    const currentPage = window.location.pathname.split('/').pop() || 'kezdooldal.html';
+    const menuLinks = document.querySelectorAll('.alap-right .item a');
+    console.log('Aktuális oldal:', currentPage);
+    console.log('Talált linkek:', menuLinks.length);
+
+    menuLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        console.log('Ellenőrzés:', href, '===', currentPage);
+        if (href === currentPage || (currentPage === '' && href === 'kezdooldal.html')) {
+            link.classList.add('active');
+            console.log('✅ Aktív link beállítva:', href);
+        }
+    });
+}
 
 function toggleMenu() {
     const menu = document.querySelector('.alap-right');
@@ -367,6 +384,31 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
+async function openAgyasPopup() {
+  try {
+      const response = await fetch("pieces/agyas.html");
+      const popupEl = document.getElementById("popup");
+
+      if (!response.ok) {
+          console.error("Nem sikerült betölteni: agyas.html");
+          alert("Hiba: nem sikerült betölteni a fájlt!");
+          return;
+      }
+
+      const html = await response.text();
+            
+      // HTML betöltése
+      popupEl.innerHTML = html;
+      popupEl.classList.add("popuppage-active");
+            
+      console.log("✓ Popup oldal betöltve!");
+  } catch (err) {
+      console.error("Hiba történt betöltés közben:", err);
+      alert("Hiba: " + err.message);
+  }
+}
+
+
 function closePopup() {
     const popupEl = document.getElementById("popup");
     if (popupEl) {
@@ -397,5 +439,70 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 //FRUZSI - ayasok
+    let count = 1;
+    let current = 1;
+    let data = [];
 
+    function changeCount(val) {
+        count = Math.min(5, Math.max(1, count + val));
+        document.getElementById("count").innerText = count;
+    }
+
+    function start() {
+        document.getElementById("step1").classList.add("hidden");
+        document.getElementById("step2").classList.remove("hidden");
+        showQuestion();
+    }
+
+    function showQuestion() {
+        document.getElementById("title").innerText =
+            current + ". terület megadása";
+        document.getElementById("shape").value = "";
+        document.getElementById("inputs").innerHTML = "";
+    }
+
+    function updateInputs() {
+        const shape = document.getElementById("shape").value;
+        const div = document.getElementById("inputs");
+        div.innerHTML = "";
+
+        if (shape === "circle") {
+            div.innerHTML = `
+                <label>Sugár:</label>
+                <input type="number" id="a">
+            `;
+        } else if (shape === "square") {
+            div.innerHTML = `
+                <label>Oldalhossz:</label>
+                <input type="number" id="a">
+            `;
+        } else if (shape === "rectangle") {
+            div.innerHTML = `
+                <label>Szélesség:</label>
+                <input type="number" id="a">
+                <label>Magasság:</label>
+                <input type="number" id="b">
+            `;
+        }
+    }
+
+    function next() {
+        const shape = document.getElementById("shape").value;
+        if (!shape) return alert("Válassz alakot!");
+
+        const a = document.getElementById("a")?.value;
+        const b = document.getElementById("b")?.value;
+
+        data.push({ shape, a, b });
+
+        if (current < count) {
+            current++;
+            showQuestion();
+        } else {
+            document.getElementById("step2").classList.add("hidden");
+            document.getElementById("done").classList.remove("hidden");
+            document.getElementById("result").innerText =
+                JSON.stringify(data, null, 2);
+        }
+    }
 

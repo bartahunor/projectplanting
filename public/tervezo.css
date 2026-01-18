@@ -80,12 +80,58 @@ body::before {
 
 
 .agyas-popup {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    display: none;              
+    position: relative;
+    inset: 0;              
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    top: 0;
+    left: 0;
 }
 
+.agyas-popup {
+    font-family: Arial, sans-serif;
+    padding: 30px;
+}
+        
+
+.box {
+    background: white;
+    padding: 20px;
+    max-width: 400px;
+    margin: auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+button {
+    padding: 8px 14px;
+    margin: 6px;
+    border: none;
+    border-radius: 6px;
+    background: #4caf50;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #388e3c;
+}
+
+select, input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 6px;
+}
+
+.hidden {
+    display: none;
+}
+
+.counter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
