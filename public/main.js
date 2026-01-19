@@ -690,3 +690,5 @@ function renderPlantList() {
     });
 }
 
+//FRUZSI  ültetés gomb
+
