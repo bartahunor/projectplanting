@@ -490,7 +490,7 @@ window.addEventListener('DOMContentLoaded', () => {
     alertDiv.innerText = message;
     alertDiv.style.display = "block";
 
-    // 3 másodperc múlva eltűnik
+    
     setTimeout(() => {
         alertDiv.style.display = "none";
     }, 3000);
@@ -499,7 +499,7 @@ window.addEventListener('DOMContentLoaded', () => {
     function next() {
     const shape = document.getElementById("shape").value;
     if (!shape) {
-        showAlert("Válassz alakot!"); // alert helyett
+        showAlert("Válassz alakot!"); 
         return;
     }
 
