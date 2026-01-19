@@ -443,7 +443,7 @@ async function openAgyasPopup() {
     let data = [];
 
     function changeCount(val) {
-        count = Math.min(5, Math.max(1, count + val));
+        count = Math.min(8, Math.max(1, count + val));
         document.getElementById("count").innerText = count;
     }
 
@@ -601,13 +601,31 @@ async function openValasztasPopup() {
             
       console.log("✓ Popup oldal betöltve!");
 
-      novenyekglobal.forEach(noveny => {
-          const option = document.createElement("option");
-          option.value = noveny.magyar_nev;
-          option.text = noveny.magyar_nev;
-          document.getElementById("plant-select").appendChild(option);
-      });
+    const response2 = await fetch('/api/novenyek');
+    
+    if (!response2.ok) {
+      throw new Error(`HTTP hiba! Status: ${response2.status}`);
+    }
+    
+    const novenyeklista = await response2.json();
+      setTimeout(() => {
+          const plantSelect = document.getElementById("plant-select");
+          
+          if (!plantSelect) {
+              console.error("plant-select elem nem található!");
+              return;
+          }
 
+          novenyeklista.forEach(noveny => {
+              const option = document.createElement("option");
+              option.value = noveny.magyar_nev;
+              option.text = noveny.magyar_nev;
+              plantSelect.appendChild(option);
+          });
+
+          console.log("✓ Növények hozzáadva a selecthez!");
+      }, 50);
+      
   } catch (err) {
       console.error("Hiba történt betöltés közben:", err);
       alert("Hiba: " + err.message);
