@@ -485,24 +485,105 @@ window.addEventListener('DOMContentLoaded', () => {
             `;
         }
     }
+    function showAlert(message) {
+    const alertDiv = document.getElementById("alert");
+    alertDiv.innerText = message;
+    alertDiv.style.display = "block";
+
+    // 3 másodperc múlva eltűnik
+    setTimeout(() => {
+        alertDiv.style.display = "none";
+    }, 3000);
+}
 
     function next() {
-        const shape = document.getElementById("shape").value;
-        if (!shape) return alert("Válassz alakot!");
-
-        const a = document.getElementById("a")?.value;
-        const b = document.getElementById("b")?.value;
-
-        data.push({ shape, a, b });
-
-        if (current < count) {
-            current++;
-            showQuestion();
-        } else {
-            document.getElementById("step2").classList.add("hidden");
-            document.getElementById("done").classList.remove("hidden");
-            document.getElementById("result").innerText =
-                JSON.stringify(data, null, 2);
-        }
+    const shape = document.getElementById("shape").value;
+    if (!shape) {
+        showAlert("Válassz alakot!"); // alert helyett
+        return;
     }
+
+    const a = Number(document.getElementById("a")?.value);
+    const b = Number(document.getElementById("b")?.value);
+
+    let area = 0;
+
+    if (shape === "circle") {
+        area = Math.PI * a * a;
+    } else if (shape === "square") {
+        area = a * a;
+    } else if (shape === "rectangle") {
+        area = a * b;
+    }
+
+    data.push({ shape, a, b, area });
+
+    if (current < count) {
+        current++;
+        showQuestion();
+    } else {
+        document.getElementById("step2").classList.add("hidden");
+        document.getElementById("done").classList.remove("hidden");
+        showResult();
+    }
+}
+
+function showResult() {
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = "";
+
+    data.forEach((item, index) => {
+        let shapeName = "";
+
+        if (item.shape === "circle") shapeName = "Kör";
+        if (item.shape === "square") shapeName = "Négyzet";
+        if (item.shape === "rectangle") shapeName = "Téglalap";
+
+        resultDiv.innerHTML += `
+            <p>
+                <strong>${index + 1}. ágyás</strong><br>
+                Alak: ${shapeName}<br>
+                Terület: ${item.area.toFixed(2)} m²
+            </p>
+            <hr>
+        `;
+    });
+}
+
+function closePopupe() {
+    document.querySelector(".agyas-popup").style.display = "none";
+    popup.classList.add("hidden");
+    renderBeds();
+}
+
+function renderBeds() {
+    const container = document.getElementById("beds");
+    container.innerHTML = "";
+
+    data.forEach(item => {
+
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("bed"); 
+
+
+        const img = document.createElement("img");
+
+        if (item.shape === "circle") {
+            img.src = "pictures/kor.png";
+        }
+        if (item.shape === "square") {
+            img.src = "pictures/negyzet.png";
+        }
+        if (item.shape === "rectangle") {
+            img.src = "pictures/teglalap.png";
+        }
+
+        img.classList.add("bed-img");
+
+
+        wrapper.appendChild(img);
+
+        container.appendChild(wrapper);
+    });
+}
 

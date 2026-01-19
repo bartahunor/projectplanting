@@ -1,7 +1,7 @@
 <div class="agyas-popup">
     <div class="box">
 
-        <!-- 1–5 választás -->
+
         <div id="step1">
             <h3>Hány ágyást szeretnél megadni?</h3>
             <div class="counter">
@@ -12,9 +12,10 @@
             <button onclick="start()">Tovább</button>
         </div>
 
-        <!-- Területek kérdezése -->
+
         <div id="step2" class="hidden">
             <h3 id="title"></h3>
+              <div id="alert" class="hidden"></div>
 
             <label>Alak:</label>
             <select id="shape" onchange="updateInputs()">
@@ -29,11 +30,11 @@
             <button onclick="next()">Következő</button>
         </div>
 
-        <!-- Vége -->
+
         <div id="done" class="hidden">
-            <h3>Kész 🎉</h3>
-            <p>Minden terület meg lett adva.</p>
-            <pre id="result"></pre>
+            <h3>Kész!</h3>
+            <div id="result"></div>
+            <button onclick="closePopupe()">OK</button>
         </div>
 
     </div>
