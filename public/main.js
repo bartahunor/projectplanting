@@ -174,7 +174,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 //HUNOR - API függvények
-
+let novenyekglobal = [];
 // Backend kapcsolat teszt
 fetch("/api/hello")
   .then(res => res.json())
@@ -193,6 +193,7 @@ async function betoltNovenyek() {
     }
     
     const novenyek = await response.json();
+    novenyekglobal = novenyek; 
     
     // Ellenőrizzük, hogy tömb-e
     if (!Array.isArray(novenyek)) {
@@ -257,7 +258,13 @@ function megjelenit(novenyek) {
     container.appendChild(card);
   });
 }
-
+window.addEventListener('DOMContentLoaded', () => {
+  const novenyekLista = document.getElementById('novenyek-lista');
+  if (novenyekLista) {
+    console.log('Növények oldal észlelve, adatok betöltése...');
+    betoltNovenyek();
+  }
+});
 /*
 // Egy adott növény lekérése ID alapján
 async function lekeresNoveny(id) {
@@ -334,6 +341,18 @@ async function torolNoveny(id) {
 }
 
 */
+// Példa használatra:
+// ujNoveny({
+//   latin_nev: 'Solanum lycopersicum',
+//   magyar_nev: 'Paradicsom',
+//   faj: 'zöldség',
+//   fajta: 'koktélparadicsom',
+//   sortavolsag_cm: 50,
+//   totavolsag_cm: 40,
+//   jo_tarsak: 'bazsalikom, sárgarépa',
+//   rossz_tarsak: 'burgonya, uborka'
+// });
+
 
 
 //FRUZSI - TERVEZŐ
@@ -384,6 +403,16 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
+
+//FRUZSI - agyasok
+function closePopup() {
+    const popupEl = document.getElementById("popup");
+    if (popupEl) {
+        popupEl.classList.remove("popuppage-active"); 
+        popupEl.innerHTML = '';
+    }
+}
+
 async function openAgyasPopup() {
   try {
       const response = await fetch("pieces/agyas.html");
@@ -409,36 +438,6 @@ async function openAgyasPopup() {
 }
 
 
-function closePopup() {
-    const popupEl = document.getElementById("popup");
-    if (popupEl) {
-        popupEl.classList.remove("popuppage-active"); 
-        popupEl.innerHTML = '';
-    }
-}
-
-
-// Példa használatra:
-// ujNoveny({
-//   latin_nev: 'Solanum lycopersicum',
-//   magyar_nev: 'Paradicsom',
-//   faj: 'zöldség',
-//   fajta: 'koktélparadicsom',
-//   sortavolsag_cm: 50,
-//   totavolsag_cm: 40,
-//   jo_tarsak: 'bazsalikom, sárgarépa',
-//   rossz_tarsak: 'burgonya, uborka'
-// });
-window.addEventListener('DOMContentLoaded', () => {
-  const novenyekLista = document.getElementById('novenyek-lista');
-  if (novenyekLista) {
-    console.log('Növények oldal észlelve, adatok betöltése...');
-    betoltNovenyek();
-  }
-});
-
-
-//FRUZSI - ayasok
     let count = 1;
     let current = 1;
     let data = [];
@@ -550,11 +549,6 @@ function showResult() {
     });
 }
 
-function closePopupe() {
-    document.querySelector(".agyas-popup").style.display = "none";
-    popup.classList.add("hidden");
-    renderBeds();
-}
 
 function renderBeds() {
     const container = document.getElementById("beds");
@@ -584,6 +578,97 @@ function renderBeds() {
         wrapper.appendChild(img);
 
         container.appendChild(wrapper);
+    });
+}
+
+//HUNOR - VALASZTAS POPUP
+async function openValasztasPopup() {
+  try {
+      const response = await fetch("pieces/valasztas.html");
+      const popupEl = document.getElementById("popup");
+
+      if (!response.ok) {
+          console.error("Nem sikerült betölteni: valasztas.html");
+          alert("Hiba: nem sikerült betölteni a fájlt!");
+          return;
+      }
+
+      const html = await response.text();
+            
+      // HTML betöltése
+      popupEl.innerHTML = html;
+      popupEl.classList.add("popuppage-active");
+            
+      console.log("✓ Popup oldal betöltve!");
+
+      novenyekglobal.forEach(noveny => {
+          const option = document.createElement("option");
+          option.value = noveny.magyar_nev;
+          option.text = noveny.magyar_nev;
+          document.getElementById("plant-select").appendChild(option);
+      });
+
+  } catch (err) {
+      console.error("Hiba történt betöltés közben:", err);
+      alert("Hiba: " + err.message);
+  }
+}
+
+
+
+let selectedPlants = []; // ide kerülnek a hozzáadott növények
+
+function showPlantAlert(message) {
+    const alertDiv = document.getElementById("plant-alert");
+    alertDiv.innerText = message;
+    alertDiv.style.display = "block";
+
+    setTimeout(() => {
+        alertDiv.style.display = "none";
+    }, 3000);
+}
+
+function clearPlantAlert() {
+    const alertDiv = document.getElementById("plant-alert");
+    alertDiv.style.display = "none";
+}
+
+// növény hozzáadása a listához
+function addPlant() {
+    const plantSelect = document.getElementById("plant-select");
+    const quantityInput = document.getElementById("plant-quantity");
+
+    const plantName = plantSelect.value;
+    const quantity = Number(quantityInput.value);
+
+    if (!plantName) {
+        showPlantAlert("Válassz növényt!");
+        return;
+    }
+    if (quantity < 1) {
+        showPlantAlert("Adj meg legalább 1 darabot!");
+        return;
+    }
+
+    // hozzáadjuk a selectedPlants tömbhöz
+    selectedPlants.push({ name: plantName, quantity });
+    renderPlantList();
+
+    // reset input
+    plantSelect.value = "";
+    quantityInput.value = 1;
+}
+
+// megjelenítés a popupban
+function renderPlantList() {
+    const listDiv = document.getElementById("plant-list");
+    listDiv.innerHTML = "";
+
+    selectedPlants.forEach(plant => {
+        const item = document.createElement("div");
+        item.classList.add("plant-item");
+        item.innerText = `${plant.name} x${plant.quantity}`;
+        listDiv.appendChild(item);
     });
 }
 
