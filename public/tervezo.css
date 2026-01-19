@@ -290,6 +290,7 @@ select:focus, input[type="number"]:focus {
 
 .bed-img.rectangle {
     width: 350px;
+    rotate: 90deg;
 }
 
 
