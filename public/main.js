@@ -235,7 +235,6 @@ function megjelenit(novenyek) {
       </div>
       <div class="noveny-card-right"></div>
     `;
-    
     // Most már a card-on belül keresünk, NEM az egész document-ben!
     const novenypic = card.querySelector('.noveny-card-right');
     
@@ -441,9 +440,11 @@ async function openAgyasPopup() {
     let count = 1;
     let current = 1;
     let data = [];
+    let area = 0;
+    let sorhossz = 0;
 
     function changeCount(val) {
-        count = Math.min(8, Math.max(1, count + val));
+        count = Math.min(9, Math.max(1, count + val));
         document.getElementById("count").innerText = count;
     }
 
@@ -485,47 +486,48 @@ async function openAgyasPopup() {
         }
     }
     function showAlert(message) {
-    const alertDiv = document.getElementById("alert");
-    alertDiv.innerText = message;
-    alertDiv.style.display = "block";
+        const alertDiv = document.getElementById("alert");
+        alertDiv.innerText = message;
+        alertDiv.style.display = "block";
 
-    
-    setTimeout(() => {
-        alertDiv.style.display = "none";
-    }, 3000);
-}
+        
+        setTimeout(() => {
+            alertDiv.style.display = "none";
+        }, 3000);
+    }
 
     function next() {
-    const shape = document.getElementById("shape").value;
-    if (!shape) {
-        showAlert("Válassz alakot!"); 
-        return;
+        const shape = document.getElementById("shape").value;
+        if (!shape) {
+            showAlert("Válassz alakot!"); 
+            return;
+        }
+
+        const a = Number(document.getElementById("a")?.value);
+        const b = Number(document.getElementById("b")?.value);
+
+        if (shape === "circle") {
+            area = Math.PI * a * a;
+        } else if (shape === "square") {
+            area = a * a;
+            sorhossz = a;
+        } else if (shape === "rectangle") {
+            area = a * b;
+            sorhossz = a < b ? a : b;
+
+        }
+
+        data.push({ shape, a, b, area });
+
+        if (current < count) {
+            current++;
+            showQuestion();
+        } else {
+            document.getElementById("step2").classList.add("hidden");
+            document.getElementById("done").classList.remove("hidden");
+            showResult();
+        }
     }
-
-    const a = Number(document.getElementById("a")?.value);
-    const b = Number(document.getElementById("b")?.value);
-
-    let area = 0;
-
-    if (shape === "circle") {
-        area = Math.PI * a * a;
-    } else if (shape === "square") {
-        area = a * a;
-    } else if (shape === "rectangle") {
-        area = a * b;
-    }
-
-    data.push({ shape, a, b, area });
-
-    if (current < count) {
-        current++;
-        showQuestion();
-    } else {
-        document.getElementById("step2").classList.add("hidden");
-        document.getElementById("done").classList.remove("hidden");
-        showResult();
-    }
-}
 
 function showResult() {
     const resultDiv = document.getElementById("result");
@@ -621,6 +623,9 @@ async function openValasztasPopup() {
               option.value = noveny.magyar_nev;
               option.text = noveny.magyar_nev;
               plantSelect.appendChild(option);
+              if (novenyekglobal.length === 0) {
+                  novenyekglobal = novenyeklista;
+              }
           });
 
           console.log("✓ Növények hozzáadva a selecthez!");
@@ -692,3 +697,38 @@ function renderPlantList() {
 
 //FRUZSI  ültetés gomb
 
+function plantNow() {
+  let neededarea = 0;
+  let novenyekbeul = [];
+  novenyekglobal.forEach(noveny => {
+      selectedPlants.forEach(selected => {
+          if (noveny.magyar_nev === selected.name) {
+              neededarea += (noveny.sortavolsag_cm * noveny.totavolsag_cm) * selected.quantity;
+              novenyekbeul.push(noveny);
+          }
+      });
+  });
+
+  console.log("Szükséges terület (cm²):", neededarea);
+  console.log("Elérhető terület (cm²):", area * 10000);
+  if (neededarea > area * 10000) {
+      console.log("Nincs elég hely az ágyásokban a kiválasztott növények számára!");
+  }
+  else {
+      console.log("Elég hely van az ágyásokban a kiválasztott növények számára!");
+      let beultetesilista = [];
+
+      let score = 0;
+      let novenyscore = new Map();
+      novenyekbeul.forEach(noveny => {
+        score -= noveny.sortavolsag_cm * noveny.totavolsag_cm / 100;
+        score += (novenyekglobal.length - noveny.rossz_tarsak.length) * 5;
+        score -= noveny.rossz_tarsak.length * 3;
+        novenyscore.set(noveny, score);
+        score = 0;
+      });
+      const rendezettNovenyek = Array.from(novenyscore.entries()).sort((a, b) => b[1] - a[1]);
+      console.log("Növények pontszám szerint rendezve:", rendezettNovenyek);
+
+  }
+}
