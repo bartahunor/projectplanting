@@ -442,6 +442,7 @@ async function openAgyasPopup() {
     let data = [];
     let area = 0;
     let sorhossz = 0;
+    let alakhossz = 0;
 
     function changeCount(val) {
         count = Math.min(9, Math.max(1, count + val));
@@ -510,11 +511,12 @@ async function openAgyasPopup() {
             area = Math.PI * a * a;
         } else if (shape === "square") {
             area = a * a;
-            sorhossz = a;
+            sorhossz = a * 100;
+            alakhossz = a * 100;
         } else if (shape === "rectangle") {
             area = a * b;
-            sorhossz = a < b ? a : b;
-
+            sorhossz = (a < b ? a : b) * 100;
+            alakhossz = (a > b ? a : b) * 100;
         }
 
         data.push({ shape, a, b, area });
@@ -704,7 +706,9 @@ function plantNow() {
       selectedPlants.forEach(selected => {
           if (noveny.magyar_nev === selected.name) {
               neededarea += (noveny.sortavolsag_cm * noveny.totavolsag_cm) * selected.quantity;
-              novenyekbeul.push(noveny);
+              for (let i = 1; i < selected.quantity; i++) {
+                  novenyekbeul.push(noveny);
+              }
           }
       });
   });
@@ -713,22 +717,137 @@ function plantNow() {
   console.log("Elérhető terület (cm²):", area * 10000);
   if (neededarea > area * 10000) {
       console.log("Nincs elég hely az ágyásokban a kiválasztott növények számára!");
+      return;
   }
-  else {
-      console.log("Elég hely van az ágyásokban a kiválasztott növények számára!");
-      let beultetesilista = [];
 
-      let score = 0;
-      let novenyscore = new Map();
-      novenyekbeul.forEach(noveny => {
-        score -= noveny.sortavolsag_cm * noveny.totavolsag_cm / 100;
-        score += (novenyekglobal.length - noveny.rossz_tarsak.length) * 5;
-        score -= noveny.rossz_tarsak.length * 3;
-        novenyscore.set(noveny, score);
-        score = 0;
-      });
-      const rendezettNovenyek = Array.from(novenyscore.entries()).sort((a, b) => b[1] - a[1]);
-      console.log("Növények pontszám szerint rendezve:", rendezettNovenyek);
 
+  console.log("Elég hely van az ágyásokban a kiválasztott növények számára!");
+  let beultetesilista = [];
+
+  // Növények pontozása és rendezése több szempont alapján nem feltétlen használom
+  let score = 0;
+  let novenyscore = new Map();
+  novenyekbeul.forEach(noveny => {
+    let score = 0;
+
+    score -= (noveny.sortavolsag_cm * noveny.totavolsag_cm) / 100;
+      
+    const rosszTarsakSzam = noveny.rossz_tarsak 
+        ? noveny.rossz_tarsak.split(',').length 
+        : 0;
+      
+    const joTarsakSzam = noveny.jo_tarsak 
+        ? noveny.jo_tarsak.split(',').length 
+        : 0;
+      
+    score += joTarsakSzam * 5;
+      
+    score -= rosszTarsakSzam * 3;
+  });
+  const rendezettNovenyek = Array.from(novenyscore.entries()).sort((a, b) => b[1] - a[1]);
+  console.log("Növények pontszám szerint rendezve:", rendezettNovenyek);
+
+
+  /*
+  while (beultetesilista.length != novenyekbeul.length) {
+    let index = 0
+    beultetesilista.push(novenyekbeul[index].magyar_nev);
+    novenyekbeul.splice(index, 1);
+    sorszelesseg = novenyekbeul[index].sortavolsag_cm;
+
+    for (let k = 0; k < novenyekbeul.length; k++) {
+      let egysor = [];
+      let currentsorhossz = sorhossz;
+      if (novenyekbeul[k].sortavolsag_cm <= sorszelesseg && currentsorhossz >= novenyekbeul[k].totavolsag_cm) {
+        egysor.push(novenyekbeul[k].magyar_nev);
+        novenyekbeul.splice(k, 1);
+        k--;
+        currentsorhossz -= novenyekbeul[k].totavolsag_cm;
+      }
+
+      if (currentsorhossz < novenyekbeul[k].totavolsag_cm) {
+        beultetesilista.push(egysor);
+        alakhossz -= sorszelesseg;
+      }
+    }
   }
+
+  console.log("Ültetési lista:", beultetesilista);
+  */
+
+
+
+
+
+  // ===== SOROK FELTÖLTÉSE =====
+  let maradekAlakhossz = alakhossz;
+  
+  while (novenyekbeul.length > 0 && maradekAlakhossz > 0) {
+
+      let index = 0;
+      
+      if (index >= novenyekbeul.length) break;
+      
+      let aktualisNoveny = novenyekbeul[index];
+      let sorszelesseg = aktualisNoveny.sortavolsag_cm;
+      
+      if (sorszelesseg > maradekAlakhossz) {
+          console.log("⚠️ Nincs több hely soroknak");
+          break;
+      }
+      
+      let egysor = [];
+      let currentsorhossz = sorhossz;
+      
+      egysor.push(aktualisNoveny.magyar_nev);
+      novenyekbeul.splice(index, 1);
+      currentsorhossz -= aktualisNoveny.totavolsag_cm;
+      
+      let k = 0;
+      while (k < novenyekbeul.length) {
+          let noveny = novenyekbeul[k];
+          
+
+          if (noveny.sortavolsag_cm <= sorszelesseg && 
+              noveny.totavolsag_cm <= currentsorhossz) {
+              
+              egysor.push(noveny.magyar_nev);
+              currentsorhossz -= noveny.totavolsag_cm;
+              novenyekbeul.splice(k, 1);
+              
+          } else {
+              k++; 
+          }
+      }
+      
+      beultetesilista.push(egysor);
+      maradekAlakhossz -= sorszelesseg;
+      
+      console.log(`Sor hozzáadva: [${egysor.join(', ')}], maradék szélesség: ${maradekAlakhossz}cm`);
+  }
+
+  // ===== 6. EREDMÉNY =====
+  console.log("✅ Végleges ültetési lista:", beultetesilista);
+  
+  // JAVÍTÁS 10: Ha maradt növény, jelezzük
+  if (novenyekbeul.length > 0) {
+      console.log("⚠️ Nem fért el minden növény! Maradék:", novenyekbeul.length, "db");
+      console.log("Maradt növények:", novenyekbeul.map(n => n.magyar_nev));
+  }
+  
+  // Eredmény megjelenítése
+  displayPlantingResult(beultetesilista);
+}
+
+// ===== SEGÉDFÜGGVÉNY: EREDMÉNY MEGJELENÍTÉSE =====
+function displayPlantingResult(beultetesilista) {
+    let message = "🌱 Beültetési terv:\n\n";
+    
+    beultetesilista.forEach((sor, index) => {
+        message += `${index + 1}. sor: ${sor.join(' → ')}\n`;
+    });
+    
+    alert(message);
+    console.log("Beültetési terv megjelenítve");
+      
 }
