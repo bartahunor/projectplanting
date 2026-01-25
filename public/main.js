@@ -437,99 +437,102 @@ async function openAgyasPopup() {
 }
 
 
-    let count = 1;
-    let current = 1;
-    let data = [];
-    let area = 0;
-    let sorhossz = 0;
-    let alakhossz = 0;
+let count = 1;
+let current = 1;
+let data = [];
+let area = 0;
+let sorhossz = [];
+let alakhossz = [];
+let osszarea = 0;
 
-    function changeCount(val) {
-        count = Math.min(9, Math.max(1, count + val));
-        document.getElementById("count").innerText = count;
+function changeCount(val) {
+    count = Math.min(9, Math.max(1, count + val));
+    document.getElementById("count").innerText = count;
+}
+
+function start() {
+    document.getElementById("step1").classList.add("hidden");
+    document.getElementById("step2").classList.remove("hidden");
+    showQuestion();
+}
+
+function showQuestion() {
+    document.getElementById("title").innerText =
+        current + ". terület megadása";
+    document.getElementById("shape").value = "";
+    document.getElementById("inputs").innerHTML = "";
+}
+
+function updateInputs() {
+    const shape = document.getElementById("shape").value;
+    const div = document.getElementById("inputs");
+    div.innerHTML = "";
+
+    if (shape === "circle") {
+        div.innerHTML = `
+            <label>Sugár:</label>
+            <input type="number" id="a">
+        `;
+    } else if (shape === "square") {
+        div.innerHTML = `
+            <label>Oldalhossz:</label>
+            <input type="number" id="a">
+        `;
+    } else if (shape === "rectangle") {
+        div.innerHTML = `
+            <label>Szélesség:</label>
+            <input type="number" id="a">
+            <label>Magasság:</label>
+            <input type="number" id="b">
+        `;
     }
-
-    function start() {
-        document.getElementById("step1").classList.add("hidden");
-        document.getElementById("step2").classList.remove("hidden");
-        showQuestion();
-    }
-
-    function showQuestion() {
-        document.getElementById("title").innerText =
-            current + ". terület megadása";
-        document.getElementById("shape").value = "";
-        document.getElementById("inputs").innerHTML = "";
-    }
-
-    function updateInputs() {
-        const shape = document.getElementById("shape").value;
-        const div = document.getElementById("inputs");
-        div.innerHTML = "";
-
-        if (shape === "circle") {
-            div.innerHTML = `
-                <label>Sugár:</label>
-                <input type="number" id="a">
-            `;
-        } else if (shape === "square") {
-            div.innerHTML = `
-                <label>Oldalhossz:</label>
-                <input type="number" id="a">
-            `;
-        } else if (shape === "rectangle") {
-            div.innerHTML = `
-                <label>Szélesség:</label>
-                <input type="number" id="a">
-                <label>Magasság:</label>
-                <input type="number" id="b">
-            `;
-        }
-    }
-    function showAlert(message) {
-        const alertDiv = document.getElementById("alert");
-        alertDiv.innerText = message;
-        alertDiv.style.display = "block";
+}
+function showAlert(message) {
+    const alertDiv = document.getElementById("alert");
+    alertDiv.innerText = message;
+    alertDiv.style.display = "block";
 
         
-        setTimeout(() => {
-            alertDiv.style.display = "none";
-        }, 3000);
-    }
+    setTimeout(() => {
+        alertDiv.style.display = "none";
+    }, 3000);
+}
 
-    function next() {
-        const shape = document.getElementById("shape").value;
-        if (!shape) {
-            showAlert("Válassz alakot!"); 
-            return;
-        }
+function next() {
+      const shape = document.getElementById("shape").value;
+      if (!shape) {
+          showAlert("Válassz alakot!"); 
+          return;
+      }
 
-        const a = Number(document.getElementById("a")?.value);
-        const b = Number(document.getElementById("b")?.value);
+      const a = Number(document.getElementById("a")?.value);
+      const b = Number(document.getElementById("b")?.value);
 
-        if (shape === "circle") {
-            area = Math.PI * a * a;
-        } else if (shape === "square") {
-            area = a * a;
-            sorhossz = a * 100;
-            alakhossz = a * 100;
-        } else if (shape === "rectangle") {
-            area = a * b;
-            sorhossz = (a < b ? a : b) * 100;
-            alakhossz = (a > b ? a : b) * 100;
-        }
+      if (shape === "circle") {
+          area = Math.PI * a * a;
+      } else if (shape === "square") {
+          area = a * a;
+          sorhossz.push(a * 100);
+          alakhossz.push(a * 100);
+          osszarea += area;
+      } else if (shape === "rectangle") {
+          area = a * b;
+          sorhossz.push((a < b ? a : b) * 100);
+          alakhossz.push((a > b ? a : b) * 100);
+          osszarea += area;
+      }
 
-        data.push({ shape, a, b, area });
+      data.push({ shape, a, b, area });
 
-        if (current < count) {
-            current++;
-            showQuestion();
-        } else {
-            document.getElementById("step2").classList.add("hidden");
-            document.getElementById("done").classList.remove("hidden");
-            showResult();
-        }
-    }
+      if (current < count) {
+          current++;
+          showQuestion();
+      } else {
+          document.getElementById("step2").classList.add("hidden");
+          document.getElementById("done").classList.remove("hidden");
+          showResult();
+      }
+}
 
 function showResult() {
     const resultDiv = document.getElementById("result");
@@ -541,12 +544,12 @@ function showResult() {
         if (item.shape === "circle") shapeName = "Kör";
         if (item.shape === "square") shapeName = "Négyzet";
         if (item.shape === "rectangle") shapeName = "Téglalap";
-
+  
         resultDiv.innerHTML += `
             <p>
                 <strong>${index + 1}. ágyás</strong><br>
                 Alak: ${shapeName}<br>
-                Terület: ${item.area.toFixed(2)} m²
+                Terület: ${item.area.toFixed(2)} m² 
             </p>
             <hr>
         `;
@@ -697,7 +700,7 @@ function renderPlantList() {
     });
 }
 
-//FRUZSI  ültetés gomb
+//HUNOR  ültetés gomb
 
 function plantNow() {
   let neededarea = 0;
@@ -706,7 +709,7 @@ function plantNow() {
       selectedPlants.forEach(selected => {
           if (noveny.magyar_nev === selected.name) {
               neededarea += (noveny.sortavolsag_cm * noveny.totavolsag_cm) * selected.quantity;
-              for (let i = 1; i < selected.quantity; i++) {
+              for (let i = 0; i < selected.quantity; i++) {
                   novenyekbeul.push(noveny);
               }
           }
@@ -714,15 +717,16 @@ function plantNow() {
   });
 
   console.log("Szükséges terület (cm²):", neededarea);
-  console.log("Elérhető terület (cm²):", area * 10000);
-  if (neededarea > area * 10000) {
+  console.log("Elérhető terület (cm²):", osszarea * 10000);
+
+  // Ellenőrzés, hogy van-e elég hely nem valószínű hogy marad
+  if (neededarea > osszarea * 10000) {
       console.log("Nincs elég hely az ágyásokban a kiválasztott növények számára!");
       return;
   }
 
 
   console.log("Elég hely van az ágyásokban a kiválasztott növények számára!");
-  let beultetesilista = [];
 
   // Növények pontozása és rendezése több szempont alapján nem feltétlen használom
   let score = 0;
@@ -748,41 +752,23 @@ function plantNow() {
   console.log("Növények pontszám szerint rendezve:", rendezettNovenyek);
 
 
-  /*
-  while (beultetesilista.length != novenyekbeul.length) {
-    let index = 0
-    beultetesilista.push(novenyekbeul[index].magyar_nev);
-    novenyekbeul.splice(index, 1);
-    sorszelesseg = novenyekbeul[index].sortavolsag_cm;
-
-    for (let k = 0; k < novenyekbeul.length; k++) {
-      let egysor = [];
-      let currentsorhossz = sorhossz;
-      if (novenyekbeul[k].sortavolsag_cm <= sorszelesseg && currentsorhossz >= novenyekbeul[k].totavolsag_cm) {
-        egysor.push(novenyekbeul[k].magyar_nev);
-        novenyekbeul.splice(k, 1);
-        k--;
-        currentsorhossz -= novenyekbeul[k].totavolsag_cm;
-      }
-
-      if (currentsorhossz < novenyekbeul[k].totavolsag_cm) {
-        beultetesilista.push(egysor);
-        alakhossz -= sorszelesseg;
-      }
-    }
-  }
-
-  console.log("Ültetési lista:", beultetesilista);
-  */
-
-
-
-
 
   // ===== SOROK FELTÖLTÉSE =====
-  let maradekAlakhossz = alakhossz;
+  let agyasindex = 0;
+  console.log(novenyekbeul);
+  const agyasMap = new Map();
   
-  while (novenyekbeul.length > 0 && maradekAlakhossz > 0) {
+
+  while (agyasindex < alakhossz.length && novenyekbeul.length > 0) {
+
+    const agyasSzam = agyasindex + 1;
+    console.log(`🟫 ${agyasSzam}. ágyás kezdése`);
+    if (!agyasMap.has(agyasSzam)) {
+        agyasMap.set(agyasSzam, []);
+    }
+
+    let maradekAlakhossz = alakhossz[agyasindex];
+    while (novenyekbeul.length > 0 && maradekAlakhossz > 0) {
 
       let index = 0;
       
@@ -790,6 +776,11 @@ function plantNow() {
       
       let aktualisNoveny = novenyekbeul[index];
       let sorszelesseg = aktualisNoveny.sortavolsag_cm;
+      let nemkompatibilis = aktualisNoveny.rossz_tarsak 
+          ? aktualisNoveny.rossz_tarsak.split(',').map(s => s.trim()) 
+          : [];
+      console.log(nemkompatibilis);
+      console.log(aktualisNoveny.id);
       
       if (sorszelesseg > maradekAlakhossz) {
           console.log("⚠️ Nincs több hely soroknak");
@@ -797,7 +788,7 @@ function plantNow() {
       }
       
       let egysor = [];
-      let currentsorhossz = sorhossz;
+      let currentsorhossz = sorhossz[agyasindex];
       
       egysor.push(aktualisNoveny.magyar_nev);
       novenyekbeul.splice(index, 1);
@@ -806,48 +797,36 @@ function plantNow() {
       let k = 0;
       while (k < novenyekbeul.length) {
           let noveny = novenyekbeul[k];
-          
+          let idstr = noveny.id.toString();
 
           if (noveny.sortavolsag_cm <= sorszelesseg && 
-              noveny.totavolsag_cm <= currentsorhossz) {
+              noveny.totavolsag_cm <= currentsorhossz && nemkompatibilis.includes(idstr) === false) {
               
               egysor.push(noveny.magyar_nev);
               currentsorhossz -= noveny.totavolsag_cm;
               novenyekbeul.splice(k, 1);
+              nemkompatibilis = noveny.rossz_tarsak 
+                ? noveny.rossz_tarsak.split(',').map(s => s.trim()) 
+                : [];
               
           } else {
               k++; 
           }
       }
       
-      beultetesilista.push(egysor);
+      agyasMap.get(agyasSzam).push(egysor);
       maradekAlakhossz -= sorszelesseg;
       
       console.log(`Sor hozzáadva: [${egysor.join(', ')}], maradék szélesség: ${maradekAlakhossz}cm`);
+      if (novenyekbeul.length > 0) {
+          console.log("❗ Bent maradt növények:", novenyekbeul.map(n => n.magyar_nev));
+      }
+    }
+    agyasindex++;
+    console.log(`🟫 ${agyasindex}. ágyás vége`);
   }
 
-  // ===== 6. EREDMÉNY =====
-  console.log("✅ Végleges ültetési lista:", beultetesilista);
-  
-  // JAVÍTÁS 10: Ha maradt növény, jelezzük
-  if (novenyekbeul.length > 0) {
-      console.log("⚠️ Nem fért el minden növény! Maradék:", novenyekbeul.length, "db");
-      console.log("Maradt növények:", novenyekbeul.map(n => n.magyar_nev));
-  }
-  
-  // Eredmény megjelenítése
-  displayPlantingResult(beultetesilista);
-}
+  console.log("🌱 Ágyás Map:", agyasMap);
 
-// ===== SEGÉDFÜGGVÉNY: EREDMÉNY MEGJELENÍTÉSE =====
-function displayPlantingResult(beultetesilista) {
-    let message = "🌱 Beültetési terv:\n\n";
-    
-    beultetesilista.forEach((sor, index) => {
-        message += `${index + 1}. sor: ${sor.join(' → ')}\n`;
-    });
-    
-    alert(message);
-    console.log("Beültetési terv megjelenítve");
-      
+ 
 }
