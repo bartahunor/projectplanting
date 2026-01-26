@@ -904,7 +904,8 @@ function drawUltetes(agyasMap) {
                 const noveny = novenyekglobal.find(n => n.magyar_nev === novenyNev);
 
                 const img = document.createElement("img");
-                img.src = noveny?.kep || "pictures/default.png";
+
+                img.src = "pictures/" + noveny.faj + ".png" || "pictures/default.png";
                 img.alt = novenyNev;
                 img.title = novenyNev;
 
