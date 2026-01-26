@@ -256,8 +256,8 @@ select:focus, input[type="number"]:focus {
     display: none;
 }
 .bed {
-    width: 30%;
-    height: 30%;
+    width: 20%;
+    height: auto;
     display: flex;
     align-items: center;   
     justify-content: center; 
@@ -267,18 +267,19 @@ select:focus, input[type="number"]:focus {
 .beds {
     display: flex;
     justify-content: center;    
-    align-items: center;       
-    gap: 10px;
-    height: 100vh;
+    align-items: center; 
+    flex-direction: row;      
+    gap: 5%;
     width: auto;               
     flex-wrap: wrap;
-    width: 70%;
+    width: 80%;
     position: fixed;
     top: 0;
     right: 0;
     height: 90%;
     margin-right: 20px;
     margin-top: 50px;
+    border: 1px solid bisque;
 }
 
 .bed img {
@@ -287,10 +288,8 @@ select:focus, input[type="number"]:focus {
     object-fit: contain;
 }
 
-.bed-img.rectangle {
-    width: 350px;
 
-}
+
 
 
 
