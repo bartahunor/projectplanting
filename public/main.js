@@ -838,3 +838,159 @@ function plantNow() {
 
  
 }
+
+
+function drawUltetes(agyasMap) {
+    if (!agyasMap) return;
+
+    const bedDivs = document.querySelectorAll(".bed");
+
+    bedDivs.forEach((bed, index) => {
+        const agyasSzam = index + 1;
+        const sorok = agyasMap.get(agyasSzam);
+        if (!sorok) return;
+
+        // Overlay létrehozása
+        let overlay = bed.querySelector(".bed-overlay");
+        if (!overlay) {
+            overlay = document.createElement("div");
+            overlay.classList.add("bed-overlay");
+            bed.appendChild(overlay);
+        }
+
+        // Reset overlay
+        overlay.innerHTML = "";
+
+        // Overlay stílus
+        overlay.style.display = "flex";
+        overlay.style.flexDirection = "column";
+        overlay.style.justifyContent = "flex-start";
+        overlay.style.alignItems = "flex-start";
+        overlay.style.width = "100%";
+        overlay.style.height = "100%";
+        overlay.style.padding = "2px";
+        overlay.style.boxSizing = "border-box";
+        overlay.style.overflow = "hidden";
+
+        const imgSize = 28; // fix méret
+        const gap = 4;
+
+        // Sorok hozzáadása
+        sorok.forEach(sor => {
+            const rowDiv = document.createElement("div");
+            rowDiv.classList.add("bed-row");
+            rowDiv.style.display = "flex";
+            rowDiv.style.flexWrap = "nowrap"; // ne törjön új sorba
+            rowDiv.style.justifyContent = "flex-start";
+            rowDiv.style.alignItems = "center";
+            rowDiv.style.gap = `${gap}px`;
+            rowDiv.style.marginBottom = `${gap}px`;
+            rowDiv.style.width = "100%";
+            rowDiv.style.overflow = "hidden";
+
+            sor.forEach(novenyNev => {
+                const noveny = novenyekglobal.find(n => n.magyar_nev === novenyNev);
+
+                const img = document.createElement("img");
+                img.src = noveny?.kep || "pictures/default.png";
+                img.alt = novenyNev;
+                img.title = novenyNev;
+
+                img.style.width = `${imgSize}px`;
+                img.style.height = `${imgSize}px`;
+                img.style.objectFit = "contain";
+                img.style.border = "1px solid #444";
+                img.style.borderRadius = "4px";
+
+                rowDiv.appendChild(img);
+            });
+
+            overlay.appendChild(rowDiv);
+        });
+    });
+}
+
+
+// 🔹 PlantNow végén hívd meg a vizualizációt
+function plantNow() {
+    let neededarea = 0;
+    let novenyekbeul = [];
+    novenyekglobal.forEach(noveny => {
+        selectedPlants.forEach(selected => {
+            if (noveny.magyar_nev === selected.name) {
+                neededarea += (noveny.sortavolsag_cm * noveny.totavolsag_cm) * selected.quantity;
+                for (let i = 0; i < selected.quantity; i++) {
+                    novenyekbeul.push(noveny);
+                }
+            }
+        });
+    });
+
+    console.log("Szükséges terület (cm²):", neededarea);
+    console.log("Elérhető terület (cm²):", osszarea * 10000);
+
+    if (neededarea > osszarea * 10000) {
+        console.log("Nincs elég hely az ágyásokban a kiválasztott növények számára!");
+        return;
+    }
+
+    // Sorok feltöltése (a te meglévő logikád)
+    let agyasindex = 0;
+    const agyasMap = new Map();
+
+    while (agyasindex < alakhossz.length && novenyekbeul.length > 0) {
+        const agyasSzam = agyasindex + 1;
+        if (!agyasMap.has(agyasSzam)) agyasMap.set(agyasSzam, []);
+
+        let maradekAlakhossz = alakhossz[agyasindex];
+        while (novenyekbeul.length > 0 && maradekAlakhossz > 0) {
+            let index = 0;
+            if (index >= novenyekbeul.length) break;
+
+            let aktualisNoveny = novenyekbeul[index];
+            let sorszelesseg = aktualisNoveny.sortavolsag_cm;
+            let nemkompatibilis = aktualisNoveny.rossz_tarsak
+                ? aktualisNoveny.rossz_tarsak.split(',').map(s => s.trim())
+                : [];
+
+            if (sorszelesseg > maradekAlakhossz) break;
+
+            let egysor = [];
+            let currentsorhossz = sorhossz[agyasindex];
+
+            egysor.push(aktualisNoveny.magyar_nev);
+            novenyekbeul.splice(index, 1);
+            currentsorhossz -= aktualisNoveny.totavolsag_cm;
+
+            let k = 0;
+            while (k < novenyekbeul.length) {
+                let noveny = novenyekbeul[k];
+                let idstr = noveny.id.toString();
+
+                if (noveny.sortavolsag_cm <= sorszelesseg &&
+                    noveny.totavolsag_cm <= currentsorhossz &&
+                    nemkompatibilis.includes(idstr) === false) {
+
+                    egysor.push(noveny.magyar_nev);
+                    currentsorhossz -= noveny.totavolsag_cm;
+                    novenyekbeul.splice(k, 1);
+                    nemkompatibilis = noveny.rossz_tarsak
+                        ? noveny.rossz_tarsak.split(',').map(s => s.trim())
+                        : [];
+                } else {
+                    k++;
+                }
+            }
+
+            agyasMap.get(agyasSzam).push(egysor);
+            maradekAlakhossz -= sorszelesseg;
+        }
+        agyasindex++;
+    }
+
+    console.log("🌱 Ágyás Map:", agyasMap);
+
+    // 🔹 IDE: vizualizáció meghívása
+    drawUltetes(agyasMap);
+}
+
