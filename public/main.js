@@ -912,8 +912,7 @@ function drawUltetes(agyasMap) {
                 img.style.width = `${imgSize}px`;
                 img.style.height = `${imgSize}px`;
                 img.style.objectFit = "contain";
-                img.style.border = "1px solid #444";
-                img.style.borderRadius = "4px";
+
 
                 rowDiv.appendChild(img);
             });

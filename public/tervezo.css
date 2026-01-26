@@ -279,7 +279,6 @@ select:focus, input[type="number"]:focus {
     height: 90%;
     margin-right: 20px;
     margin-top: 50px;
-    border: 1px solid bisque;
 }
 
 .bed img {
@@ -287,6 +286,8 @@ select:focus, input[type="number"]:focus {
     max-height: 100%;
     object-fit: contain;
 }
+
+
 
 
 
