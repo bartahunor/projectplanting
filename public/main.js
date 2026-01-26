@@ -581,6 +581,9 @@ function renderBeds() {
 
         img.classList.add("bed-img");
 
+        img.onload = () => {
+            console.log("Kép betöltve:", img.src);
+        };
 
         wrapper.appendChild(img);
 
@@ -835,6 +838,7 @@ function plantNow() {
   }
 
   console.log("🌱 Ágyás Map:", agyasMap);
+  drawUltetes(agyasMap);
 
  
 }
@@ -858,6 +862,13 @@ function drawUltetes(agyasMap) {
             bed.appendChild(overlay);
         }
 
+        let imgwidth = bed.querySelector(".bed-img").clientWidth;
+        let imgheight = bed.querySelector(".bed-img").clientHeight;
+        let beddivwidth = bed.clientWidth;
+        let beddivheight = bed.clientHeight;
+        let olwidth = imgwidth / beddivwidth * 100;
+        let olheight = imgheight / beddivheight * 100;
+        console.log(`Ágyás ${agyasSzam} méretei: ${olwidth}% x ${olheight}%`);
         // Reset overlay
         overlay.innerHTML = "";
 
@@ -866,14 +877,15 @@ function drawUltetes(agyasMap) {
         overlay.style.flexDirection = "column";
         overlay.style.justifyContent = "flex-start";
         overlay.style.alignItems = "flex-start";
-        overlay.style.width = "100%";
-        overlay.style.height = "100%";
+        overlay.style.width = olwidth + "%";
+        overlay.style.height = olheight + "%";
         overlay.style.padding = "2px";
         overlay.style.boxSizing = "border-box";
         overlay.style.overflow = "hidden";
 
         const imgSize = 28; // fix méret
         const gap = 4;
+        
 
         // Sorok hozzáadása
         sorok.forEach(sor => {
@@ -912,86 +924,5 @@ function drawUltetes(agyasMap) {
 }
 
 
-// 🔹 PlantNow végén hívd meg a vizualizációt
-function plantNow() {
-    let neededarea = 0;
-    let novenyekbeul = [];
-    novenyekglobal.forEach(noveny => {
-        selectedPlants.forEach(selected => {
-            if (noveny.magyar_nev === selected.name) {
-                neededarea += (noveny.sortavolsag_cm * noveny.totavolsag_cm) * selected.quantity;
-                for (let i = 0; i < selected.quantity; i++) {
-                    novenyekbeul.push(noveny);
-                }
-            }
-        });
-    });
 
-    console.log("Szükséges terület (cm²):", neededarea);
-    console.log("Elérhető terület (cm²):", osszarea * 10000);
-
-    if (neededarea > osszarea * 10000) {
-        console.log("Nincs elég hely az ágyásokban a kiválasztott növények számára!");
-        return;
-    }
-
-    // Sorok feltöltése (a te meglévő logikád)
-    let agyasindex = 0;
-    const agyasMap = new Map();
-
-    while (agyasindex < alakhossz.length && novenyekbeul.length > 0) {
-        const agyasSzam = agyasindex + 1;
-        if (!agyasMap.has(agyasSzam)) agyasMap.set(agyasSzam, []);
-
-        let maradekAlakhossz = alakhossz[agyasindex];
-        while (novenyekbeul.length > 0 && maradekAlakhossz > 0) {
-            let index = 0;
-            if (index >= novenyekbeul.length) break;
-
-            let aktualisNoveny = novenyekbeul[index];
-            let sorszelesseg = aktualisNoveny.sortavolsag_cm;
-            let nemkompatibilis = aktualisNoveny.rossz_tarsak
-                ? aktualisNoveny.rossz_tarsak.split(',').map(s => s.trim())
-                : [];
-
-            if (sorszelesseg > maradekAlakhossz) break;
-
-            let egysor = [];
-            let currentsorhossz = sorhossz[agyasindex];
-
-            egysor.push(aktualisNoveny.magyar_nev);
-            novenyekbeul.splice(index, 1);
-            currentsorhossz -= aktualisNoveny.totavolsag_cm;
-
-            let k = 0;
-            while (k < novenyekbeul.length) {
-                let noveny = novenyekbeul[k];
-                let idstr = noveny.id.toString();
-
-                if (noveny.sortavolsag_cm <= sorszelesseg &&
-                    noveny.totavolsag_cm <= currentsorhossz &&
-                    nemkompatibilis.includes(idstr) === false) {
-
-                    egysor.push(noveny.magyar_nev);
-                    currentsorhossz -= noveny.totavolsag_cm;
-                    novenyekbeul.splice(k, 1);
-                    nemkompatibilis = noveny.rossz_tarsak
-                        ? noveny.rossz_tarsak.split(',').map(s => s.trim())
-                        : [];
-                } else {
-                    k++;
-                }
-            }
-
-            agyasMap.get(agyasSzam).push(egysor);
-            maradekAlakhossz -= sorszelesseg;
-        }
-        agyasindex++;
-    }
-
-    console.log("🌱 Ágyás Map:", agyasMap);
-
-    // 🔹 IDE: vizualizáció meghívása
-    drawUltetes(agyasMap);
-}
 
