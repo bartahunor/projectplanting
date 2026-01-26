@@ -136,7 +136,7 @@ body::before {
     cursor: pointer;
     background-color: #4CAF50;
     color: white;
-    transition: background 0.2s ease, transform 0.2s ease;
+    transition: 0.2s ease, transform 0.2s ease;
 }
 
 .taj-popup button:hover {
@@ -146,14 +146,12 @@ body::before {
 
 
 .agyas-popup {
-    position: fixed;
+    position: relative;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* halvány, modern overlay */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    backdrop-filter: blur(4px); /* enyhe elmosás a háttéren */
     transition: opacity 0.3s ease;
 }
 
@@ -312,14 +310,13 @@ select:focus, input[type="number"]:focus {
 }
 
 .plant-popup {
-    position: fixed;
+    position: relative;
     inset: 0;
-    background-color: rgba(0,0,0,0.5);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 2000;
-    backdrop-filter: blur(4px);
+
 }
 
 .plant-box {
@@ -386,13 +383,14 @@ select:focus, input[type="number"]:focus {
 }
 
 .plant-item {
-    background-color: #e8f5e9;
+    background-color: #c1e6c5;
     color: #2e7d32;
-    padding: 6px 10px;
+    padding: 0px 5px 0px 5px;
     border-radius: 8px;
     font-size: 14px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 5px;
 }
 
@@ -400,6 +398,41 @@ select:focus, input[type="number"]:focus {
     width: 95%;
 }
 
+
+.plant-item .delete-btn  {
+    background: transparent;
+    color: #2e7d32;
+    border: none;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    font-size: 15px;           
+    border-radius: 3px;        
+    padding: 0;                
+    display: flex;             
+    align-items: center;       
+    justify-content: center;  
+    margin-bottom: 5px; 
+    border: none;
+    box-shadow: none;
+}
+
+.plant-item .delete-btn:hover {
+    background: transparent;
+    box-shadow: none;
+}
+
+.close-pop-btn{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    height: 30px !important;
+    width: 20px !important;
+    font-size: 15px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 /*FRUZSI-ültetés*/
 .bed {
     position: relative; 
