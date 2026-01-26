@@ -692,10 +692,18 @@ function renderPlantList() {
     const listDiv = document.getElementById("plant-list");
     listDiv.innerHTML = "";
 
-    selectedPlants.forEach(plant => {
+    selectedPlants.forEach((plant, index) => {
         const item = document.createElement("div");
         item.classList.add("plant-item");
         item.innerText = `${plant.name} x${plant.quantity}`;
+        const deleteBtn = document.createElement("button");
+        deleteBtn.innerText = "✕";
+        deleteBtn.classList.add("delete-btn");
+        deleteBtn.onclick = () => {
+            selectedPlants.splice(index, 1);
+            renderPlantList();
+        };
+        item.appendChild(deleteBtn);
         listDiv.appendChild(item);
     });
 }
