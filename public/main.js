@@ -875,30 +875,33 @@ function drawUltetes(agyasMap) {
         // Overlay stílus
         overlay.style.display = "flex";
         overlay.style.flexDirection = "column";
-        overlay.style.justifyContent = "flex-start";
-        overlay.style.alignItems = "flex-start";
+        overlay.style.justifyContent = "center";
+        overlay.style.alignItems = "center";
         overlay.style.width = olwidth + "%";
         overlay.style.height = olheight + "%";
         overlay.style.padding = "2px";
         overlay.style.boxSizing = "border-box";
-        overlay.style.overflow = "hidden";
+        overlay.style.overflow = "auto";
 
         const imgSize = 28; // fix méret
         const gap = 4;
         
-
+        let gappercent = 100 / Math.max(...Array.from(agyasMap.values()).flat().map(arr => arr.length));
         // Sorok hozzáadása
         sorok.forEach(sor => {
             const rowDiv = document.createElement("div");
             rowDiv.classList.add("bed-row");
             rowDiv.style.display = "flex";
             rowDiv.style.flexWrap = "nowrap"; // ne törjön új sorba
-            rowDiv.style.justifyContent = "flex-start";
+            rowDiv.style.justifyContent = "center";
             rowDiv.style.alignItems = "center";
-            rowDiv.style.gap = `${gap}px`;
-            rowDiv.style.marginBottom = `${gap}px`;
+            rowDiv.style.gap = `auto`;
+            //rowDiv.style.marginBottom = `auto`;
             rowDiv.style.width = "100%";
             rowDiv.style.overflow = "hidden";
+            rowDiv.style.overflowX = "auto"; // vízszintes scroll
+            rowDiv.style.flexWrap = "nowrap";
+
 
             sor.forEach(novenyNev => {
                 const noveny = novenyekglobal.find(n => n.magyar_nev === novenyNev);
