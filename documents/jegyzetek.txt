@@ -1,6 +1,13 @@
 Database password
 6UvDkKeKeqY7A6AJ
 
+Email service password
+service_8embcep
+
+Service ID:service_8embcep
+template id: template_72ieegd
+Public key: ffvqP6xTeKY8xJqxR
+
 A server.js még nem kéri le helyesen a db.js-től az adatbázist mert még supabasen nincs létre hozva, de a kapcsolatok már elméletileg működnek
 
 CREATE TABLE novenyek (

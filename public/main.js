@@ -1,3 +1,4 @@
+
 async function includeHTML(id, file) {  
   const response = await fetch(file);
   if (response.ok) {
@@ -20,6 +21,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       betoltNovenyek();
     }
   }, 100);
+
 });
 
 function setActiveMenuItem() {
@@ -374,7 +376,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     if (fromKezdo === "true" && popupEl) {
         console.log("✓ Felhasználó a kezdőoldalról jött, popup betöltése...");
-        
+
         // Töröljük a jelzőt
         sessionStorage.removeItem("fromKezdo");
         
@@ -712,7 +714,7 @@ function renderPlantList() {
 }
 
 //HUNOR  ültetés gomb
-
+const agyasMap = new Map();
 function plantNow() {
   let neededarea = 0;
   let novenyekbeul = [];
@@ -767,7 +769,7 @@ function plantNow() {
   // ===== SOROK FELTÖLTÉSE =====
   let agyasindex = 0;
   console.log(novenyekbeul);
-  const agyasMap = new Map();
+  
   
 
   while (agyasindex < alakhossz.length && novenyekbeul.length > 0) {
@@ -928,3 +930,43 @@ function drawUltetes(agyasMap) {
 
 
 
+window.addEventListener('DOMContentLoaded', function() {
+  // Inicializálás (ez egyszer kell, pl. az app indulásakor)
+  emailjs.init('ffvqP6xTeKY8xJqxR'); // A te public key-ed
+});
+async function kuldesEmail() {
+  let text = mapToString(agyasMap);
+  console.log(text);
+
+  const templateParams = {
+    user_name: document.getElementById('receiver-name').value,
+    to_email: document.getElementById('receiver-email').value,
+    plan: text,  // Ez megy a {{message}} helyére
+  };
+  
+  try {
+    await emailjs.send('service_8embcep', 'template_72ieegd', templateParams);
+    alert('Email elküldve!');
+  } catch (error) {
+    console.error('Hiba:', error);
+    alert('Nem sikerült!');
+  }
+}
+
+function mapToString(agyasokMap) {
+  let result = "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+  result += `🌱 KERTED TERVE 🌱\n`;
+  result += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+  // Végigmegyünk az ágyásokon
+  agyasokMap.forEach((sorok, agyasIndex) => {
+    result += `📦 ÁGYÁS #${agyasIndex} ---------------- \n\n`;
+    
+    // Végigmegyünk a sorokon
+    sorok.forEach((noveynyek, sorIndex) => {
+      result += `  🌿 ${sorIndex + 1}. sor:\n`;
+      result += `     ${noveynyek.join(', ')}\n\n`;
+    });
+  });
+  
+  return result;
+}
