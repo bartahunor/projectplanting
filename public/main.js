@@ -1110,3 +1110,41 @@ async function openListaPopup(novenyekbeul) {
 function goHome() {
     window.location.href = "kezdooldal.html"; // cseréld a főoldalad URL-jére
 }
+
+function resetEverything() {
+  // Globális változók nullázása
+  count = 1;
+  current = 1;
+  data = [];
+  area = 0;
+  sorhossz = [];
+  alakhossz = [];
+  osszarea = 0;
+  selectedPlants = [];
+  currentSlide = 0;
+  agyasMap.clear(); // Map ürítése
+  
+  // Input mezők ürítése
+  const receiverName = document.getElementById('receiver-name');
+  const receiverEmail = document.getElementById('receiver-email');
+  if (receiverName) receiverName.value = '';
+  if (receiverEmail) receiverEmail.value = '';
+  
+  // Ágyások eltávolítása a DOM-ból
+  const bedsContainer = document.getElementById('beds');
+  if (bedsContainer) {
+    bedsContainer.innerHTML = '';
+  }
+  
+  // Email gomb kikapcsolása
+  const emailBtn = document.querySelector('.email-send-btn');
+  if (emailBtn) {
+    emailBtn.disabled = true;
+    emailBtn.style.backgroundColor = '#666';
+  }
+  
+  // Popup bezárása ha nyitva van
+  closePopup();
+  
+  console.log('✅ Minden alaphelyzetbe állítva!');
+}

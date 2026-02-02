@@ -720,5 +720,46 @@ select:focus, input[type="number"]:focus {
         margin-bottom: 20px;
     }
 
+    .taj-popup {
+        width: 95%;
+        max-width: 95%;
+        height: auto;
+        max-height: 90vh;
+
+        padding: 20px;
+        border-radius: 16px;
+
+        font-size: 16px;
+        gap: 15px;
+
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+
+        background-position: center top;
+    }
+
+    .taj-popup h3 {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .taj-popup p {
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    .taj-popup button {
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+    }
+
+    .taj-popup .close-btn {
+        top: 10px;
+        right: 10px;
+        width: 20px;
+        height: 20px;
+        font-size: 16px;
+    }
 }
 

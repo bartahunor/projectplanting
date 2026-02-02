@@ -469,6 +469,51 @@ section {
   opacity: 1;
   transform: scale(1);
 }
+
+@media (max-width: 768px) {
+
+    .rolunk {
+        transform: none !important;
+        height: auto;
+        padding: 40px 20px;
+    }
+
+    .bemutato {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .valami {
+        width: 100%;
+        margin: 0;
+    }
+
+    .tobbi {
+        width: 100%;
+        height: 250px;
+    }
+
+    .kep {
+        mask-image: none;
+        -webkit-mask-image: none;
+        background-position: center;
+    }
+
+    .irat {
+        font-size: 16px;
+        text-align: left;
+    }
+
+    .nagy {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .scroll-anim {
+        transform: none !important;
+        opacity: 1 !important;
+    }
+}
 /*FRUZSI - gyakranism */
 #faqh1 {
     text-align: center;
@@ -860,3 +905,18 @@ details[open] summary::after {
   width: 100%;
 }
 
+@media screen and (max-width: 768px) {
+  .noveny-card{
+    width: 90%;
+    height: auto;
+    flex-direction: column;
+  }
+  .noveny-card-left, .noveny-card-right{
+    width: 100%;
+    border-radius: 15px;
+  }
+  .noveny-card-right{
+    height: 200px;
+  }
+  
+}
