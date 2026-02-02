@@ -558,16 +558,22 @@ function showResult() {
     });
 }
 
-
 function renderBeds() {
     const container = document.getElementById("beds");
     container.innerHTML = "";
 
+    // Carousel wrapper létrehozása
+    const carouselWrapper = document.createElement("div");
+    carouselWrapper.classList.add("carousel-wrapper");
+
+    // Carousel track létrehozása
+    const carouselTrack = document.createElement("div");
+    carouselTrack.classList.add("carousel-track");
+    carouselTrack.id = "carouselTrack";
+
     data.forEach(item => {
-
         const wrapper = document.createElement("div");
-        wrapper.classList.add("bed"); 
-
+        wrapper.classList.add("bed");
 
         const img = document.createElement("img");
 
@@ -588,8 +594,81 @@ function renderBeds() {
         };
 
         wrapper.appendChild(img);
+        carouselTrack.appendChild(wrapper);
+    });
 
-        container.appendChild(wrapper);
+    carouselWrapper.appendChild(carouselTrack);
+
+    // Navigációs gombok
+    if (data.length > 1) {
+        const prevBtn = document.createElement("button");
+        prevBtn.classList.add("carousel-btn", "prev");
+        prevBtn.innerHTML = "❮";
+        prevBtn.onclick = () => moveCarousel(-1);
+
+        const nextBtn = document.createElement("button");
+        nextBtn.classList.add("carousel-btn", "next");
+        nextBtn.innerHTML = "❯";
+        nextBtn.onclick = () => moveCarousel(1);
+
+        carouselWrapper.appendChild(prevBtn);
+        carouselWrapper.appendChild(nextBtn);
+    }
+
+    // Indikátorok
+    if (data.length > 1) {
+        const indicators = document.createElement("div");
+        indicators.classList.add("carousel-indicators");
+        indicators.id = "carouselIndicators";
+
+        data.forEach((_, index) => {
+            const dot = document.createElement("span");
+            dot.classList.add("indicator-dot");
+            if (index === 0) dot.classList.add("active");
+            dot.onclick = () => goToSlide(index);
+            indicators.appendChild(dot);
+        });
+
+        carouselWrapper.appendChild(indicators);
+    }
+
+    container.appendChild(carouselWrapper);
+}
+
+let currentSlide = 0;
+
+function moveCarousel(direction) {
+    const track = document.getElementById("carouselTrack");
+    const slides = track.children;
+    
+    currentSlide += direction;
+    
+    if (currentSlide < 0) {
+        currentSlide = slides.length - 1;
+    } else if (currentSlide >= slides.length) {
+        currentSlide = 0;
+    }
+    
+    updateCarousel();
+}
+
+function goToSlide(index) {
+    currentSlide = index;
+    updateCarousel();
+}
+
+function updateCarousel() {
+    const track = document.getElementById("carouselTrack");
+    const indicators = document.querySelectorAll(".indicator-dot");
+    
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    
+    indicators.forEach((dot, index) => {
+        if (index === currentSlide) {
+            dot.classList.add("active");
+        } else {
+            dot.classList.remove("active");
+        }
     });
 }
 
@@ -732,11 +811,7 @@ function plantNow() {
   console.log("Szükséges terület (cm²):", neededarea);
   console.log("Elérhető terület (cm²):", osszarea * 10000);
 
-  // Ellenőrzés, hogy van-e elég hely nem valószínű hogy marad
-  if (neededarea > osszarea * 10000) {
-      console.log("Nincs elég hely az ágyásokban a kiválasztott növények számára!");
-      return;
-  }
+
 
 
   console.log("Elég hely van az ágyásokban a kiválasztott növények számára!");
@@ -888,38 +963,44 @@ function drawUltetes(agyasMap) {
         const imgSize = 28; // fix méret
         const gap = 4;
         
-        let gappercent = 100 / Math.max(...Array.from(agyasMap.values()).flat().map(arr => arr.length));
+        let imgpercent = 100 / Math.max(...Array.from(agyasMap.values()).flat().map(arr => arr.length));
+        console.log(`Kép méret százalékban: ${imgpercent}%`);
         // Sorok hozzáadása
         sorok.forEach(sor => {
             const rowDiv = document.createElement("div");
-            rowDiv.classList.add("bed-row");
             rowDiv.style.display = "flex";
-            rowDiv.style.flexWrap = "nowrap"; // ne törjön új sorba
+            rowDiv.style.flexWrap = "nowrap";
             rowDiv.style.justifyContent = "center";
             rowDiv.style.alignItems = "center";
-            rowDiv.style.gap = `auto`;
-            //rowDiv.style.marginBottom = `auto`;
             rowDiv.style.width = "100%";
+            rowDiv.style.gap = "4px";
             rowDiv.style.overflow = "hidden";
-            rowDiv.style.overflowX = "auto"; // vízszintes scroll
-            rowDiv.style.flexWrap = "nowrap";
 
 
             sor.forEach(novenyNev => {
                 const noveny = novenyekglobal.find(n => n.magyar_nev === novenyNev);
 
-                const img = document.createElement("img");
+                // Négyzetes konténer
+                const imgWrapper = document.createElement("div");
+                imgWrapper.style.flex = "1 1 0";
+                imgWrapper.style.aspectRatio = "1 / 1"; // 🔥 négyzet
+                imgWrapper.style.maxWidth = "100%";
+                imgWrapper.style.display = "flex";
+                imgWrapper.style.alignItems = "center";
+                imgWrapper.style.justifyContent = "center";
+                imgWrapper.style.overflow = "hidden";
 
-                img.src = "pictures/" + noveny.faj + ".png" || "pictures/default.png";
+                const img = document.createElement("img");
+                img.src = noveny ? `pictures/${noveny.faj}.png` : "pictures/default.png";
                 img.alt = novenyNev;
                 img.title = novenyNev;
 
-                img.style.width = `${imgSize}px`;
-                img.style.height = `${imgSize}px`;
-                img.style.objectFit = "contain";
+                img.style.width = "100%";
+                img.style.height = "100%";
+                img.style.objectFit = "contain"; // nem lóg ki, nem torzul
 
-
-                rowDiv.appendChild(img);
+                imgWrapper.appendChild(img);
+                rowDiv.appendChild(imgWrapper);
             });
 
             overlay.appendChild(rowDiv);
