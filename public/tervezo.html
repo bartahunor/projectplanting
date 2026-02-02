@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="tervezo.css">
     <title>Garden Architect</title>
@@ -15,7 +15,7 @@
         <div class="email-box">
             <input type="text" id="receiver-name" placeholder="Címzett neve">
             <input type="email" id="receiver-email" placeholder="Címzett e-mail címe">
-            <button type="button" class="email-send-btn" onclick="kuldesEmail()">
+            <button type="button" class="email-send-btn" onclick="kuldesEmail()" disabled>
                 KÜLDÉS E-MAILBEN
             </button>
         </div>
@@ -26,6 +26,7 @@
     <div id="popup" class="popup"></div>
     
     <div id="beds" class="beds"></div>
+
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
