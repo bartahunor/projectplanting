@@ -1051,3 +1051,11 @@ function mapToString(agyasokMap) {
   
   return result;
 }
+
+//FRUZSI-lista
+
+
+//FRUZSI-visszagomb
+function goHome() {
+    window.location.href = "kezdooldal.html"; // cseréld a főoldalad URL-jére
+}

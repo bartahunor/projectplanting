@@ -116,7 +116,7 @@ h1{
 }
 
 .alap-right a.active {
-    color: white; /* Vagy bármilyen más szín */
+    color: white; 
 }
 
 .item0 img{
@@ -156,7 +156,7 @@ h1{
     .alap-right {
         position: fixed;
         top: 80px;
-        left: -100%; /* Alapból rejtve */
+        left: -100%; 
         width: 100%;
         height: calc(100vh - 80px);
         background-color: #95bb72;
@@ -169,7 +169,7 @@ h1{
     }
     
     .alap-right.active {
-        left: 0; /* Megjelenik amikor aktív */
+        left: 0; 
     }
     
     .alap-right a {
@@ -281,12 +281,12 @@ section {
 
 .cim {
     position: relative;
-    height: 100vh; /* Teljes képernyő magasság */
-    min-height: 600px; /* Minimum magasság kisebb képernyőkön */
-    max-height: 1200px; /* Maximum magasság nagy képernyőkön */
+    height: 100vh; 
+    min-height: 600px; 
+    max-height: 1200px; 
     width: 100%;
     margin-top: 100px;
-    overflow: hidden; /* Fontos: levágja a túlnyúló részeket */
+    overflow: hidden; 
 }
 
 .cim video {
@@ -516,7 +516,7 @@ summary::-webkit-details-marker {
 }
 
 details[open] {
-    border-color: #007bff;
+    border-color: #003d0f;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
@@ -548,7 +548,7 @@ details[open] summary::after {
   margin-bottom: 30px;
   padding-bottom: 10px;
   display: inline-block;
-  width: fit-content; /* csak a szöveg szélessége */
+  width: fit-content; 
 }
 
 .section-title::after {
@@ -557,11 +557,10 @@ details[open] summary::after {
   left: 0;
   bottom: 0;
   height: 4px;
-  width: 100vw; /* a teljes nézetablak szélesség */
+  width: 100vw; 
   background: linear-gradient(90deg, #a3d9a5, #00441b);
   border-radius: 2px;
   transform-origin: left center;
-  /* Balról indul, de a teljes képernyőszélesség */
   z-index: -1;
   pointer-events: none;
 }
@@ -656,11 +655,11 @@ details[open] summary::after {
   right: 15px;
 }
 
-/* Reszponzív mobilra */
+
 
 @media (max-width: 768px) {
   .carousel-slide {
-    min-width: 100%; /* 1 elem mobilon */
+    min-width: 100%; 
   }
 }
 
@@ -798,7 +797,7 @@ details[open] summary::after {
   transform: translate(-50%, -50%);
   color: white;
   font-size: 4rem;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.9); /* Erősebb árnyék a jobb olvashatósághoz */
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.9); 
 }
 
 .noveny-cards{

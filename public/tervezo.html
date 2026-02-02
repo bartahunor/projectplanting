@@ -12,17 +12,24 @@
         <button onclick="openAgyasPopup()">ADD MEG A FÖLDED TERÜLETÉT</button>
         <button onclick="openValasztasPopup()">ADD MEG A NÖVÉNYEKET</button>
         <button onclick="plantNow()">ÜLTESD BE!</button>
-        <form action="">
+        <div class="email-box">
             <input type="text" id="receiver-name" placeholder="Címzett neve">
             <input type="email" id="receiver-email" placeholder="Címzett e-mail címe">
-            <button type="button" onclick="kuldesEmail()">KÜLDÉS E-MAILBEN</button>
-        </form>
+            <button type="button" class="email-send-btn" onclick="kuldesEmail()">
+                KÜLDÉS E-MAILBEN
+            </button>
+        </div>
     </div>
 
+    <button id="mini-home-btn" onclick="goHome()"><img src="pictures/undo.png" alt=""></button>
+
     <div id="popup" class="popup"></div>
+    
     <div id="beds" class="beds"></div>
     
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+
     <script src="main.js"></script>
     
 </body>
