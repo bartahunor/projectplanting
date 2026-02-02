@@ -358,7 +358,6 @@ async function torolNoveny(id) {
 
 //FRUZSI - TERVEZŐ
 window.addEventListener("DOMContentLoaded", async () => {
-    // Várunk, hogy a header betöltődjön (ha van)
     await new Promise(resolve => setTimeout(resolve, 200));
     
     const gotoTervezoBtn = document.getElementById("gotoTervezo");
@@ -370,17 +369,14 @@ window.addEventListener("DOMContentLoaded", async () => {
         console.log("✓ Tervező gomb eseménykezelő hozzáadva");
     }
 
-    // Ellenőrizzük, hogy a tervezo.html oldalon vagyunk-e
     const fromKezdo = sessionStorage.getItem("fromKezdo");
     const popupEl = document.getElementById("popup");
 
     if (fromKezdo === "true" && popupEl) {
         console.log("✓ Felhasználó a kezdőoldalról jött, popup betöltése...");
 
-        // Töröljük a jelzőt
         sessionStorage.removeItem("fromKezdo");
         
-        // Betöltjük a popup-ot
         try {
             const response = await fetch("pieces/taj.html");
 
@@ -392,7 +388,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
             const html = await response.text();
             
-            // HTML betöltése
             popupEl.innerHTML = html;
             popupEl.classList.add("popuppage-active");
             
@@ -427,7 +422,6 @@ async function openAgyasPopup() {
 
       const html = await response.text();
             
-      // HTML betöltése
       popupEl.innerHTML = html;
       popupEl.classList.add("popuppage-active");
             
@@ -448,7 +442,7 @@ let alakhossz = [];
 let osszarea = 0;
 
 function changeCount(val) {
-    count = Math.min(9, Math.max(1, count + val));
+    count = Math.min(100, Math.max(1, count + val));
     document.getElementById("count").innerText = count;
 }
 
@@ -470,12 +464,7 @@ function updateInputs() {
     const div = document.getElementById("inputs");
     div.innerHTML = "";
 
-    if (shape === "circle") {
-        div.innerHTML = `
-            <label>Sugár:</label>
-            <input type="number" id="a">
-        `;
-    } else if (shape === "square") {
+    if (shape === "square") {
         div.innerHTML = `
             <label>Oldalhossz:</label>
             <input type="number" id="a">
@@ -510,9 +499,7 @@ function next() {
       const a = Number(document.getElementById("a")?.value);
       const b = Number(document.getElementById("b")?.value);
 
-      if (shape === "circle") {
-          area = Math.PI * a * a;
-      } else if (shape === "square") {
+      if (shape === "square") {
           area = a * a;
           sorhossz.push(a * 100);
           alakhossz.push(a * 100);
@@ -542,8 +529,6 @@ function showResult() {
 
     data.forEach((item, index) => {
         let shapeName = "";
-
-        if (item.shape === "circle") shapeName = "Kör";
         if (item.shape === "square") shapeName = "Négyzet";
         if (item.shape === "rectangle") shapeName = "Téglalap";
   
@@ -577,9 +562,6 @@ function renderBeds() {
 
         const img = document.createElement("img");
 
-        if (item.shape === "circle") {
-            img.src = "pictures/kor.png";
-        }
         if (item.shape === "square") {
             img.src = "pictures/negyzet.png";
         }
@@ -1127,43 +1109,4 @@ async function openListaPopup(novenyekbeul) {
 //FRUZSI-visszagomb
 function goHome() {
     window.location.href = "kezdooldal.html"; // cseréld a főoldalad URL-jére
-}
-
-
-function resetEverything() {
-  // Globális változók nullázása
-  count = 1;
-  current = 1;
-  data = [];
-  area = 0;
-  sorhossz = [];
-  alakhossz = [];
-  osszarea = 0;
-  selectedPlants = [];
-  currentSlide = 0;
-  agyasMap.clear(); // Map ürítése
-  
-  // Input mezők ürítése
-  const receiverName = document.getElementById('receiver-name');
-  const receiverEmail = document.getElementById('receiver-email');
-  if (receiverName) receiverName.value = '';
-  if (receiverEmail) receiverEmail.value = '';
-  
-  // Ágyások eltávolítása a DOM-ból
-  const bedsContainer = document.getElementById('beds');
-  if (bedsContainer) {
-    bedsContainer.innerHTML = '';
-  }
-  
-  // Email gomb kikapcsolása
-  const emailBtn = document.querySelector('.email-send-btn');
-  if (emailBtn) {
-    emailBtn.disabled = true;
-    emailBtn.style.backgroundColor = '#666';
-  }
-  
-  // Popup bezárása ha nyitva van
-  closePopup();
-  
-  console.log('✅ Minden alaphelyzetbe állítva!');
 }
