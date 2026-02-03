@@ -408,7 +408,20 @@ function closePopup() {
         popupEl.innerHTML = '';
     }
 }
+function closePopupAndDisable() {
+    const popupEl = document.getElementById("popup");
+    if (popupEl) {
+        popupEl.classList.remove("popuppage-active");
+        popupEl.innerHTML = '';
+        if (sourceBtn !== null && sourceBtn !== undefined) {
+            sourceBtn.disabled = true;
+            sourceBtn.style.backgroundColor = "#6cae6e";
+            sourceBtn = null;
+        }
+    }
 
+}
+let sourceBtn = null;
 async function openAgyasPopup() {
   try {
       const response = await fetch("pieces/agyas.html");
@@ -425,6 +438,7 @@ async function openAgyasPopup() {
       popupEl.innerHTML = html;
       popupEl.classList.add("popuppage-active");
             
+      sourceBtn = document.activeElement;
       console.log("✓ Popup oldal betöltve!");
   } catch (err) {
       console.error("Hiba történt betöltés közben:", err);
@@ -701,7 +715,7 @@ async function openValasztasPopup() {
 
           console.log("✓ Növények hozzáadva a selecthez!");
       }, 50);
-      
+      sourceBtn = document.activeElement;
   } catch (err) {
       console.error("Hiba történt betöltés közben:", err);
       alert("Hiba: " + err.message);
@@ -906,6 +920,10 @@ function plantNow() {
       const emailBtn = document.querySelector(".email-send-btn");
       emailBtn.style.backgroundColor = "#4CAF50"; // aktív zöld
       emailBtn.disabled = false;
+
+      const plantBtn = document.getElementById("plant-now-btn");
+      plantBtn.style.backgroundColor = "#6cae6e";
+      plantBtn.disabled = true;
   }
 
 }
