@@ -87,8 +87,27 @@ body::before {
     background-size: cover;
     background-position: center;
     color: #333; 
+    overflow-y: auto;
 }
 
+.taj-popup::-webkit-scrollbar {
+    width: 8px;
+}
+
+.taj-popup::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    margin: 10px 0;
+}
+
+.taj-popup::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.taj-popup::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
 
 .close-btn {
     position: absolute;
@@ -675,6 +694,7 @@ select:focus, input[type="number"]:focus {
 
 
 /* Mobil nézet - add hozzá a tervezo.css végére */
+/* Mobil nézet - cseréld ki a meglévő @media részt */
 
 @media screen and (max-width: 768px) {
     body {
@@ -682,12 +702,16 @@ select:focus, input[type="number"]:focus {
         overflow-x: hidden;
         height: auto;
         min-height: 100vh;
+        padding-bottom: 100px; /* Hely a mini-home gombnak */
     }
+    
     /* Top left buttons mobilon */
     .top-left-buttons {
-        margin-top: 0px;
-        left: 50%;
-        transform: translateX(-50%);
+        position: relative; /* fixed helyett */
+        top: auto;
+        left: auto;
+        transform: none;
+        margin: 20px auto;
         width: 90%;
         max-width: 400px;
         z-index: 1000;
@@ -705,36 +729,39 @@ select:focus, input[type="number"]:focus {
 
     /* Beds div a gombok alá kerül */
     .beds {
-
-        margin-top: 20px;
-        bottom: 200px; /* Mini-home button fölé */
-        right: 0;
-        left: 0;
-        width: 100%;
+        position: relative; /* fixed helyett */
+        top: auto;
+        right: auto;
+        left: auto;
+        width: 90%;
         height: auto;
-        max-height: 50vh;
-        margin: 0;
+        max-height: none;
+        margin: 20px auto;
         padding: 10px;
+        display: flex;
         justify-content: center;
-        align-items: center;
-        margin-bottom: 20px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .bed {
+        width: 80%;
+        max-width: 300px;
+        height: auto;
     }
 
     .taj-popup {
         width: 95%;
         max-width: 95%;
         height: auto;
-        max-height: 90vh;
-
+        max-height: 85vh;
         padding: 20px;
         border-radius: 16px;
-
         font-size: 16px;
         gap: 15px;
-
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
-
         background-position: center top;
     }
 
@@ -757,9 +784,33 @@ select:focus, input[type="number"]:focus {
     .taj-popup .close-btn {
         top: 10px;
         right: 10px;
-        width: 20px;
-        height: 20px;
+        width: 30px;
+        height: 30px;
         font-size: 16px;
     }
-}
 
+    /* Mini home button mobilon */
+    #mini-home-btn {
+        position: fixed;
+        bottom: 15px;
+        left: 15px;
+        z-index: 3000;
+    }
+
+    /* Carousel gombok mobilon kisebbek */
+    .carousel-btn {
+        padding: 10px 15px;
+        font-size: 18px;
+    }
+
+    /* Missed popup mobilon */
+    .missed-popup {
+        top: 10px;
+        right: 10px;
+    }
+
+    .missed-box {
+        width: 250px;
+        max-height: 300px;
+    }
+}

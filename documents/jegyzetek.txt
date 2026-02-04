@@ -38,7 +38,7 @@ npm start
 JAVÍTANI:
 -növények beültetési mérete
 -növény megadás terület megadás letiltása használat Után --> kész
--mobil nézet ágyás elhelyezése
--laptop nézet tájékoztató méret
+-mobil nézet ágyás elhelyezése --> kész
+-laptop nézet tájékoztató méret --> kész 
 
 *lista ürítések ha kilépünk tervezés közbe
