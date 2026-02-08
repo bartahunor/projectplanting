@@ -577,6 +577,9 @@ select:focus, input[type="number"]:focus {
 .email-box .email-send-btn{
     background-color: #666;
 }
+.email-box .email-send-btn:hover{
+    background-color: #666;
+}
 /*FRUZSI-lista*/
 
 .missed-popup {

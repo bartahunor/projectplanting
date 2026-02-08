@@ -968,7 +968,7 @@ function drawUltetes(agyasMap) {
         overlay.style.boxSizing = "border-box";
         overlay.style.overflow = "auto";
 
-        const imgSize = 28; // fix méret
+        const imgSize = 50; // fix méret
         const gap = 4;
         
         let imgpercent = 100 / Math.max(...Array.from(agyasMap.values()).flat().map(arr => arr.length));
@@ -1005,6 +1005,10 @@ function drawUltetes(agyasMap) {
 
                 img.style.width = "100%";
                 img.style.height = "100%";
+                img.style.maxWidth = "50px";
+                img.style.maxHeight = "50px";
+                img.style.minHeight = "20px";
+                img.style.minWidth = "20px";
                 img.style.objectFit = "contain"; // nem lóg ki, nem torzul
 
                 imgWrapper.appendChild(img);
@@ -1140,25 +1144,38 @@ function resetEverything() {
   osszarea = 0;
   selectedPlants = [];
   currentSlide = 0;
-  agyasMap.clear(); // Map ürítése
+  agyasMap.clear(); 
   
-  // Input mezők ürítése
   const receiverName = document.getElementById('receiver-name');
   const receiverEmail = document.getElementById('receiver-email');
   if (receiverName) receiverName.value = '';
   if (receiverEmail) receiverEmail.value = '';
   
-  // Ágyások eltávolítása a DOM-ból
   const bedsContainer = document.getElementById('beds');
   if (bedsContainer) {
     bedsContainer.innerHTML = '';
   }
   
-  // Email gomb kikapcsolása
   const emailBtn = document.querySelector('.email-send-btn');
   if (emailBtn) {
     emailBtn.disabled = true;
     emailBtn.style.backgroundColor = '#666';
+  }
+
+  const agyasBtn = document.getElementById("agyas-btn");
+  const plantNowBtn = document.getElementById("plant-now-btn");
+  const valasztasBtn = document.getElementById("valasztas-btn");
+  if (agyasBtn) {
+    agyasBtn.disabled = false;
+    agyasBtn.style.backgroundColor = ' #2e7d32';
+  }
+  if (plantNowBtn) {
+    plantNowBtn.disabled = false;
+    plantNowBtn.style.backgroundColor = ' #2e7d32';
+  }
+  if (valasztasBtn) {
+    valasztasBtn.disabled = false;
+    valasztasBtn.style.backgroundColor = ' #2e7d32';
   }
   
   // Popup bezárása ha nyitva van
