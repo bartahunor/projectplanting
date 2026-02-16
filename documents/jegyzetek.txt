@@ -42,3 +42,6 @@ JAVÍTANI:
 -laptop nézet tájékoztató méret --> kész 
 
 *lista ürítések ha kilépünk tervezés közbe
+
+
+polyculture
